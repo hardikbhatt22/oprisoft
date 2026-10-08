@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Operisoft Interview Prep — Cloud & AI/ML (From Zero)</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#111a2e; --panel2:#0f1830; --card:#13203a;
+    --ink:#e8eefb; --muted:#9fb0cf; --line:#223253;
+    --brand:#3b82f6; --brand2:#22d3ee; --good:#22c55e; --bad:#ef4444; --warn:#f59e0b;
+    --accent:#6366f1;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:
+    radial-gradient(1200px 600px at 80% -10%, #16233f 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, #10233a 0%, transparent 55%),
+    var(--bg); color:var(--ink); line-height:1.6;}
+  a{color:var(--brand2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header.hero{padding:48px 20px 34px;text-align:center;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(59,130,246,.10), transparent);}
+  .hero h1{margin:0 0 6px;font-size:clamp(26px,4vw,40px);letter-spacing:.3px}
+  .hero .tag{color:var(--brand2);font-weight:600;letter-spacing:2px;text-transform:uppercase;font-size:12px}
+  .hero p{color:var(--muted);max-width:760px;margin:12px auto 0}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  nav.toc{position:sticky;top:0;z-index:20;background:rgba(11,18,32,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:10px 0}
+  nav.toc .wrap{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  nav.toc a{font-size:13px;color:var(--muted);padding:6px 10px;border:1px solid var(--line);border-radius:999px}
+  nav.toc a:hover{color:var(--ink);border-color:var(--brand);text-decoration:none}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(20px,3vw,28px);margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  h2 .n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,var(--brand),var(--accent));font-size:15px;color:#fff;flex:0 0 auto}
+  h3{color:#cfe0ff;margin:22px 0 6px;font-size:18px}
+  h4{color:var(--brand2);margin:16px 0 4px;font-size:15px;text-transform:uppercase;letter-spacing:.6px}
+  p,li{color:#d6e0f3}
+  .lead{color:var(--muted)}
+  .grid{display:grid;gap:14px}
+  @media(min-width:640px){.grid.cols2{grid-template-columns:1fr 1fr}.grid.cols3{grid-template-columns:1fr 1fr 1fr}}
+  .card{background:linear-gradient(180deg,var(--card),var(--panel2));border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px}
+  .card h3{margin-top:0}
+  .pill{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
+    color:var(--muted);margin:3px 4px 3px 0;background:#0e1830}
+  .pill.b{color:#bcd3ff;border-color:#2a4a86}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px;overflow:hidden;border-radius:10px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#13213e;color:#cfe0ff}
+  tr:nth-child(even) td{background:#0f1a30}
+  code{background:#0c1628;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:#ffd9a8;font-size:.9em}
+  .note{border-left:3px solid var(--brand);background:#0f1a30;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
+  .tip{border-left-color:var(--good)}
+  .warnbox{border-left-color:var(--warn)}
+  .rl{border:1px solid #2b4a35;background:linear-gradient(135deg,#0e2018,#0f1a30);border-radius:12px;
+    padding:13px 16px;margin:14px 0;font-size:14.5px}
+  .rl .rlt{color:var(--good);font-weight:700;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;
+    margin-bottom:6px;display:flex;gap:7px;align-items:center}
+  .rl .rlt:before{content:"🌍"}
+  .rl p{margin:6px 0;color:#d9e6da}
+  .story{border:1px solid #39436e;background:linear-gradient(135deg,#141f42,#0f1830);border-radius:14px;
+    padding:16px 20px;margin:16px 0}
+  .story .st{color:#aabdf5;font-weight:700;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:8px}
+  .story .st:before{content:"📖 "}
+  details.qa{background:var(--panel2);border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:0 14px}
+  details.qa>summary{cursor:pointer;padding:14px 0;font-weight:600;color:#eaf1ff;list-style:none;display:flex;gap:10px;align-items:flex-start}
+  details.qa>summary::-webkit-details-marker{display:none}
+  details.qa>summary:before{content:"Q";flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:var(--accent);
+    color:#fff;display:grid;place-items:center;font-size:13px;margin-top:1px}
+  details.qa[open]>summary{color:var(--brand2)}
+  details.qa .ans{padding:0 0 14px 34px;color:#d6e0f3;border-top:1px dashed var(--line);margin-top:2px;padding-top:12px}
+  .cat{display:inline-block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-bottom:8px}
+  /* quiz */
+  .q{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+  .q .qt{font-weight:600;margin-bottom:10px}
+  .q label{display:block;background:#0e1830;border:1px solid var(--line);border-radius:9px;padding:10px 12px;
+    margin:7px 0;cursor:pointer;transition:.15s}
+  .q label:hover{border-color:var(--brand)}
+  .q input{margin-right:9px}
+  .q label.correct{border-color:var(--good);background:#0f2a1c}
+  .q label.wrong{border-color:var(--bad);background:#2a0f12}
+  .q .exp{display:none;margin-top:10px;font-size:14px;color:#cfe0ff;border-left:3px solid var(--good);padding:8px 12px;background:#0f1a30;border-radius:0 8px 8px 0}
+  .q.answered .exp{display:block}
+  .btn{display:inline-block;background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;border:0;
+    padding:12px 22px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  #scorebox{display:none;margin:16px 0;padding:18px;border-radius:12px;border:1px solid var(--line);
+    background:linear-gradient(135deg,#102244,#0f1830);text-align:center}
+  #scorebox .big{font-size:42px;font-weight:800}
+  .steps{counter-reset:s;list-style:none;padding:0}
+  .steps li{counter-increment:s;position:relative;padding:8px 0 8px 40px;border-bottom:1px dashed var(--line)}
+  .steps li:before{content:counter(s);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;
+    background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+  footer{padding:30px 20px;text-align:center;color:var(--muted);font-size:13px}
+  .chatcall{background:linear-gradient(135deg,#13223f,#0f1830);border:1px solid #2a4a86;border-radius:14px;padding:18px}
+  .wq{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+  .wq .wqt{font-weight:600;color:#eaf1ff;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
+  .wq .wqt .num{flex:0 0 auto;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-size:13px;margin-top:1px}
+  .wq textarea{width:100%;min-height:92px;resize:vertical;background:#0c1628;border:1px solid var(--line);
+    border-radius:9px;color:var(--ink);padding:11px 12px;font-family:inherit;font-size:14px;line-height:1.55}
+  .wq textarea:focus{outline:none;border-color:var(--brand)}
+  .wq .reveal{margin-top:10px}
+  .wq .reveal>summary{cursor:pointer;color:var(--brand2);font-size:14px;font-weight:600;list-style:none;
+    display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line);border-radius:8px}
+  .wq .reveal>summary::-webkit-details-marker{display:none}
+  .wq .reveal>summary:before{content:"★";color:var(--warn)}
+  .wq .reveal[open]>summary{color:var(--good);border-color:var(--good)}
+  .wq .model{margin-top:10px;border-left:3px solid var(--good);background:#0f1a30;border-radius:0 10px 10px 0;
+    padding:10px 14px;color:#d6e0f3;font-size:14px}
+  .roundhead{color:var(--brand2);text-transform:uppercase;letter-spacing:1px;font-size:13px;margin:22px 0 2px;font-weight:700}
+  .kbd{font-family:monospace;background:#0c1628;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 7px}
+  ul.clean{list-style:none;padding-left:0}
+  ul.clean li{padding:6px 0 6px 26px;position:relative}
+  ul.clean li:before{content:"▸";position:absolute;left:4px;color:var(--brand2)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="tag">Interview Preparation Guide</div>
+  <h1>Operisoft — Cloud &amp; AI/ML Engineer</h1>
+  <p>A complete, start-from-zero study pack: understand what Operisoft does, learn the core concepts, read interview questions with model answers, then test yourself with an auto-graded quiz and written practice.</p>
+  <p class="lead" style="font-size:13px">Prepared for your interview · Covers AWS Cloud + AI/ML fundamentals · No prior knowledge assumed</p>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#company">1 · The Company</a>
+    <a href="#role">2 · Your Role</a>
+    <a href="#cloud">3 · Cloud + AWS</a>
+    <a href="#aiml">4 · AI / ML</a>
+    <a href="#qa">5 · Q&amp;A Bank</a>
+    <a href="#quiz">6 · MCQ Quiz</a>
+    <a href="#written">7 · Written Practice</a>
+    <a href="#tips">8 · Interview Day</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ 1 COMPANY ============ -->
+<section id="company">
+  <h2><span class="n">1</span> What Operisoft Does</h2>
+  <p class="lead">Operisoft is an <strong>IT services + products company</strong> built around three big themes: <strong>Cloud, Artificial Intelligence, and Cybersecurity</strong> — "unified under one roof." In plain words: they help other businesses move to the cloud, run it securely, save money on it, and add AI on top — and they also sell their own security/compliance software products.</p>
+
+  <div class="grid cols2">
+    <div class="card">
+      <h3>Two ways they make money</h3>
+      <ul class="clean">
+        <li><strong>Services (consulting / managed services):</strong> they do the work for clients — set up AWS, run DevOps pipelines, secure systems, migrate databases, cut cloud bills, build AI features.</li>
+        <li><strong>Products (their own software):</strong> ready-made tools clients can buy and use.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Their technology partners</h3>
+      <p class="lead" style="margin-top:0">Partnerships = credibility + certified expertise:</p>
+      <span class="pill b">AWS</span><span class="pill b">MongoDB</span><span class="pill b">Veeam</span>
+      <span class="pill b">CrowdStrike</span><span class="pill b">Zscaler</span><span class="pill b">Motadata</span>
+      <p style="font-size:13px;margin-bottom:0" class="lead">AWS = cloud · Veeam = backup · CrowdStrike = endpoint security · Zscaler = network security · MongoDB = database · Motadata = IT monitoring.</p>
+    </div>
+  </div>
+
+  <div class="story">
+    <div class="st">What a real client project looks like (illustrative)</div>
+    <p style="margin:0">Imagine a <strong>retail chain</strong> whose website runs on old servers in their own office. It crashes during sales, backups are manual, and they fear hackers. They hire Operisoft. The team <strong>migrates</strong> the site to AWS (EC2 servers + RDS database), puts it behind a <strong>load balancer with auto scaling</strong> so sale-day traffic never crashes it, sets up <strong>automated backups</strong> (Veeam / AWS Backup), adds <strong>monitoring</strong> so the team is alerted before customers notice problems, runs a <strong>security review</strong> (CrowdStrike for endpoints, tight IAM permissions), and finally <strong>cuts the monthly bill ~30%</strong> by right-sizing servers and reserving capacity. Later, the AI team adds a <strong>demand-forecasting model</strong> so the chain stocks the right products before festivals. That one story touches almost every Operisoft service — remember it, and you can explain the whole company.</p>
+  </div>
+
+  <h3>The Services they offer</h3>
+  <div class="grid cols2">
+    <div class="card"><h4>AWS Cloud</h4><p style="margin:0">Design, build and run infrastructure on Amazon Web Services — the core of the business.</p></div>
+    <div class="card"><h4>DevOps &amp; Platform Engineering</h4><p style="margin:0">Automating how software is built, tested and deployed (CI/CD, infrastructure-as-code).</p></div>
+    <div class="card"><h4>Cybersecurity</h4><p style="margin:0">Protecting systems: security architecture, monitoring, compliance.</p></div>
+    <div class="card"><h4>AI &amp; ML Services</h4><p style="margin:0">Adding intelligence — predictions, automation, generative AI — to client products.</p></div>
+    <div class="card"><h4>Data &amp; Analytics</h4><p style="margin:0">Turning raw data into dashboards and insights (data pipelines, warehouses).</p></div>
+    <div class="card"><h4>Backup &amp; Disaster Recovery</h4><p style="margin:0">Making sure data survives failures and can be restored quickly (Veeam).</p></div>
+    <div class="card"><h4>Observability &amp; ITSM / IT Ops</h4><p style="margin:0">Monitoring health of systems and running IT service management (Motadata).</p></div>
+    <div class="card"><h4>Custom Development</h4><p style="margin:0">Building bespoke software/web apps for clients.</p></div>
+  </div>
+
+  <h3>Their own Products</h3>
+  <div class="grid cols2">
+    <div class="card"><h4>MizanGRC</h4><p style="margin:0">Governance, Risk &amp; Compliance platform — tracks security controls and audit readiness.</p></div>
+    <div class="card"><h4>CloudLabs</h4><p style="margin:0">Hands-on cloud lab/training environments.</p></div>
+    <div class="card"><h4>Compliance Scanner</h4><p style="margin:0">Checks infrastructure against compliance standards.</p></div>
+    <div class="card"><h4>Phishing Simulation</h4><p style="margin:0">Tests employees with fake phishing emails to train them.</p></div>
+    <div class="card"><h4>Dark Web Monitoring</h4><p style="margin:0">Watches the dark web for leaked company data/credentials.</p></div>
+    <div class="card"><h4>Log Analysis + Android Security Auditor + AI Solutions</h4><p style="margin:0">Log search, mobile-app security scanning, and packaged AI offerings.</p></div>
+  </div>
+
+  <h3>Industries they serve</h3>
+  <p><span class="pill">Healthcare &amp; Life Sciences</span><span class="pill">Financial Services &amp; Insurance</span><span class="pill">Retail &amp; CPG</span><span class="pill">Manufacturing</span><span class="pill">Transport &amp; Logistics</span><span class="pill">Media &amp; Entertainment</span><span class="pill">Education</span></p>
+
+  <div class="note tip"><strong>One-line pitch to remember:</strong> "Operisoft is an AWS-focused cloud, AI and cybersecurity company that helps businesses build, secure and optimize their cloud — and also builds its own security &amp; compliance products."</div>
+</section>
+
+<!-- ============ 2 ROLE ============ -->
+<section id="role">
+  <h2><span class="n">2</span> Where You Fit (Cloud + AI/ML Engineer)</h2>
+  <p class="lead">As a starting Cloud / AI-ML engineer at a company like this, you'd typically grow through work like:</p>
+  <div class="grid cols2">
+    <div class="card">
+      <h4>Cloud side</h4>
+      <ul class="clean">
+        <li>Creating and managing AWS resources (servers, storage, networks)</li>
+        <li>Setting up users &amp; permissions (IAM) securely</li>
+        <li>Monitoring systems and responding to alerts</li>
+        <li>Helping migrate client data/apps to AWS</li>
+        <li>Finding ways to cut the AWS bill</li>
+        <li>Setting up backups and recovery</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>AI/ML side</h4>
+      <ul class="clean">
+        <li>Preparing and cleaning data</li>
+        <li>Using AWS AI services (SageMaker, Bedrock, Rekognition…)</li>
+        <li>Helping train/test models and measure accuracy</li>
+        <li>Building GenAI features (chatbots, document Q&amp;A / RAG)</li>
+        <li>Deploying models so apps can use them (inference)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note"><strong>What they really test in a fresher:</strong> clear fundamentals, willingness to learn, honesty when you don't know, and the ability to <em>reason</em> about a problem out loud. You are <u>not</u> expected to know everything.</div>
+</section>
+
+<!-- ============ 3 CLOUD + AWS ============ -->
+<section id="cloud">
+  <h2><span class="n">3</span> Cloud &amp; AWS — From Zero</h2>
+
+  <h3>3.1 What is "the cloud"?</h3>
+  <p>Instead of buying your own physical computers/servers and keeping them in a room, you <strong>rent</strong> computing power, storage and networking from a provider (like Amazon) over the internet, and pay only for what you use. That provider is a <strong>cloud provider</strong>; Amazon's is <strong>AWS (Amazon Web Services)</strong>.</p>
+
+  <div class="rl">
+    <div class="rlt">Real-life analogy &amp; examples</div>
+    <p><strong>Cloud is like electricity.</strong> You don't build a power plant at home — you plug in and pay the monthly bill for what you used. Likewise, you don't buy servers — you "plug into" AWS and pay for what you used.</p>
+    <p><strong>Real companies on AWS:</strong> Netflix streams to 200M+ users from AWS; Zomato/Swiggy-style apps scale up at dinner time and down at 3 am; even Operisoft's own website is served through AWS CloudFront. A two-person startup can launch an app tonight on AWS with ₹0 hardware — that's why cloud won.</p>
+  </div>
+
+  <h4>The 3 service models</h4>
+  <table>
+    <tr><th>Model</th><th>What you get</th><th>Everyday analogy</th></tr>
+    <tr><td><strong>IaaS</strong> (Infrastructure)</td><td>Raw servers, storage, network. You manage the OS &amp; apps. e.g. EC2.</td><td>Renting an empty apartment</td></tr>
+    <tr><td><strong>PaaS</strong> (Platform)</td><td>A ready platform to run code; provider manages servers. e.g. AWS Elastic Beanstalk.</td><td>A serviced apartment</td></tr>
+    <tr><td><strong>SaaS</strong> (Software)</td><td>Finished software you just use. e.g. Gmail.</td><td>A hotel room</td></tr>
+  </table>
+
+  <h4>Why companies move to cloud (benefits)</h4>
+  <p><span class="pill b">No upfront hardware cost</span><span class="pill b">Pay-as-you-go</span><span class="pill b">Scales up/down fast (elasticity)</span><span class="pill b">Global reach</span><span class="pill b">High availability</span><span class="pill b">Managed security tools</span></p>
+
+  <h3>3.2 Regions &amp; Availability Zones</h3>
+  <ul class="clean">
+    <li><strong>Region</strong> = a geographic area (e.g. Mumbai <code>ap-south-1</code>). You pick a region close to your users.</li>
+    <li><strong>Availability Zone (AZ)</strong> = one or more separate data centres inside a region. Using <em>multiple AZs</em> means if one data centre fails, your app stays up — this is called <strong>high availability</strong>.</li>
+  </ul>
+
+  <h3>3.3 The core AWS services to know</h3>
+  <table>
+    <tr><th>Service</th><th>Category</th><th>What it is (simple)</th><th>Real-life example</th></tr>
+    <tr><td><strong>EC2</strong></td><td>Compute</td><td>Virtual servers in the cloud. You choose size (CPU/RAM) and OS.</td><td>Hosting a company's website or app backend.</td></tr>
+    <tr><td><strong>S3</strong></td><td>Storage</td><td>Unlimited object storage for files (images, backups, logs). Stored in "buckets".</td><td>Storing every product photo of a shopping site + nightly database backups.</td></tr>
+    <tr><td><strong>EBS</strong></td><td>Storage</td><td>A hard disk you attach to an EC2 server.</td><td>The "C: drive" of your cloud server.</td></tr>
+    <tr><td><strong>VPC</strong></td><td>Networking</td><td>Your own private network inside AWS where your servers live.</td><td>An office building only your company can enter.</td></tr>
+    <tr><td><strong>IAM</strong></td><td>Security</td><td>Controls <em>who</em> can do <em>what</em> — users, groups, roles, permissions.</td><td>Intern gets read-only; team lead gets admin.</td></tr>
+    <tr><td><strong>RDS</strong></td><td>Database</td><td>Managed SQL databases (MySQL, PostgreSQL…). AWS handles backups/patching.</td><td>A food-delivery app's orders &amp; customers database.</td></tr>
+    <tr><td><strong>Lambda</strong></td><td>Compute (serverless)</td><td>Run code without managing servers; pay per execution.</td><td>Auto-resize a photo the second a user uploads it.</td></tr>
+    <tr><td><strong>CloudFront</strong></td><td>Networking (CDN)</td><td>Caches content at edge locations worldwide so sites load fast.</td><td>Why the same video loads fast in both Mumbai and New York.</td></tr>
+    <tr><td><strong>Route 53</strong></td><td>Networking (DNS)</td><td>Turns domain names (operisoft.com) into IP addresses.</td><td>The "phonebook of the internet".</td></tr>
+    <tr><td><strong>ELB</strong></td><td>Networking</td><td>Load Balancer — spreads traffic across many servers.</td><td>A railway-station marshal sending people to the shortest ticket queue.</td></tr>
+    <tr><td><strong>Auto Scaling</strong></td><td>Compute</td><td>Automatically adds/removes EC2 servers based on demand.</td><td>Festival sale at 8 pm → 20 servers; 3 am → 2 servers.</td></tr>
+    <tr><td><strong>CloudWatch</strong></td><td>Monitoring</td><td>Collects metrics, logs and alarms to watch system health.</td><td>SMS alert at 2 am: "CPU above 80% on web server".</td></tr>
+    <tr><td><strong>KMS</strong></td><td>Security</td><td>Manages encryption keys to protect data.</td><td>A bank locker that holds all your other locker keys.</td></tr>
+    <tr><td><strong>DMS</strong></td><td>Migration</td><td>Database Migration Service — moves databases into AWS with little downtime.</td><td>Moving a bank's old database to AWS while the bank keeps operating.</td></tr>
+  </table>
+  <div class="note tip"><strong>Memory trick:</strong> group services by job — <em>Compute</em> (EC2, Lambda), <em>Storage</em> (S3, EBS), <em>Database</em> (RDS, DynamoDB), <em>Network</em> (VPC, Route 53, CloudFront, ELB), <em>Security</em> (IAM, KMS), <em>Monitoring</em> (CloudWatch).</div>
+
+  <h3>3.4 The Shared Responsibility Model (very common question)</h3>
+  <p>Security is a partnership:</p>
+  <table>
+    <tr><th>AWS is responsible for…</th><th>You (customer) are responsible for…</th></tr>
+    <tr><td>Security <strong>OF</strong> the cloud: physical data centres, hardware, the global network.</td><td>Security <strong>IN</strong> the cloud: your data, IAM users/permissions, OS patches, firewall (security group) rules, encryption settings.</td></tr>
+  </table>
+  <div class="rl">
+    <div class="rlt">Real-life analogy</div>
+    <p><strong>It's like renting an apartment.</strong> The landlord (AWS) secures the building — walls, main gate, security guard, fire systems. But locking <em>your own flat's door</em>, deciding who gets a key, and not leaving valuables on the balcony is <em>your</em> job (the customer). Most real cloud breaches happen because the customer left the "door" open — e.g. a public S3 bucket or leaked access keys — not because AWS was hacked.</p>
+  </div>
+
+  <h3>3.5 IAM essentials</h3>
+  <ul class="clean">
+    <li><strong>User</strong> = a person/app identity. <strong>Group</strong> = a set of users. <strong>Role</strong> = temporary permissions that services/users can "assume".</li>
+    <li><strong>Policy</strong> = a JSON document listing allowed/denied actions.</li>
+    <li><strong>Least privilege</strong> = give only the permissions needed, nothing more. (Golden rule.)</li>
+    <li>Always enable <strong>MFA</strong> (multi-factor auth) and <strong>never use the root account</strong> for daily work.</li>
+  </ul>
+  <div class="rl">
+    <div class="rlt">Real-life example</div>
+    <p>A new intern joins and only needs to <em>view</em> dashboards — so they get a read-only policy. The deployment pipeline needs to upload files to one S3 bucket — so it gets a <em>role</em> that can write to <strong>only that bucket</strong> and nothing else. Why it matters: a classic real-world incident is a developer accidentally pushing AWS access keys to a public GitHub repo — bots find such keys <em>within minutes</em> and spin up expensive servers for crypto-mining. With least privilege, a leaked key can do far less damage; with MFA and quick key rotation, the damage is stopped.</p>
+  </div>
+
+  <h3>3.6 Well-Architected Framework — 6 pillars</h3>
+  <p><span class="pill b">Operational Excellence</span><span class="pill b">Security</span><span class="pill b">Reliability</span><span class="pill b">Performance Efficiency</span><span class="pill b">Cost Optimization</span><span class="pill b">Sustainability</span></p>
+
+  <h3>3.7 Backup &amp; Disaster Recovery (Operisoft does a lot of this)</h3>
+  <ul class="clean">
+    <li><strong>RPO (Recovery Point Objective):</strong> how much data (time) you can afford to lose. e.g. RPO = 1 hour → back up at least hourly.</li>
+    <li><strong>RTO (Recovery Time Objective):</strong> how fast you must be back up and running after a failure.</li>
+    <li>Tools: AWS Backup, S3 for storing backups, <strong>Veeam</strong> (partner) for enterprise backup.</li>
+    <li><strong>3-2-1 rule:</strong> keep 3 copies of data, on 2 different types of storage, 1 of them off-site (e.g. in another region).</li>
+  </ul>
+  <div class="rl">
+    <div class="rlt">Real-life example</div>
+    <p>A <strong>hospital</strong> cannot lose patient records. It might set <strong>RPO = 15 minutes</strong> (back up every 15 min — losing more than 15 minutes of records is unacceptable) and <strong>RTO = 1 hour</strong> (systems must be restored within an hour, because doctors need them). Compare that to a company blog: RPO of 24 hours and RTO of a day might be fine. This is also the main defence against <strong>ransomware</strong> — if attackers encrypt your systems, you don't pay; you restore last night's clean backup. That's why Operisoft sells Backup &amp; DR as a dedicated service.</p>
+  </div>
+
+  <h3>3.8 Cost optimization (Operisoft sells this as a service)</h3>
+  <ul class="clean">
+    <li><strong>Right-sizing:</strong> use the correct (not oversized) instance.</li>
+    <li><strong>Reserved Instances / Savings Plans:</strong> commit for 1–3 years → big discount vs on-demand.</li>
+    <li><strong>Spot Instances:</strong> cheap spare capacity for non-critical work.</li>
+    <li><strong>Delete unused resources</strong> (idle EBS volumes, old snapshots, unattached IPs).</li>
+    <li><strong>S3 lifecycle rules</strong> to move old data to cheaper storage (Glacier).</li>
+    <li>Use <strong>Cost Explorer</strong> &amp; <strong>Budgets</strong> to watch spend.</li>
+  </ul>
+  <div class="rl">
+    <div class="rlt">Real-life example</div>
+    <p>A startup's AWS bill hits <strong>₹4 lakh/month</strong> and nobody knows why. A cost review finds: development/test servers running 24×7 though developers work 10 hours a day (→ auto-shutdown at night and weekends saves ~65% on those), a database sized for 10× the real traffic (→ right-size it), 2 TB of old logs sitting in expensive S3 storage (→ lifecycle rule moves them to Glacier at ~1/5 the price), and forgotten EBS volumes from deleted servers still being billed. Result: the bill drops 30–40% <em>without touching the product</em>. This exact exercise is a service Operisoft sells — their blog even has a post titled "Cut AWS Cloud Costs. Close Security Gaps."</p>
+  </div>
+
+  <h3>3.9 Pricing models (EC2)</h3>
+  <table>
+    <tr><th>Model</th><th>Best for</th></tr>
+    <tr><td>On-Demand</td><td>Short-term, unpredictable workloads. Pay by the second/hour.</td></tr>
+    <tr><td>Reserved / Savings Plans</td><td>Steady, predictable workloads (1–3 yr commitment, cheaper).</td></tr>
+    <tr><td>Spot</td><td>Flexible, interruptible jobs (up to ~90% cheaper).</td></tr>
+  </table>
+
+  <h3>3.10 A real project, start to finish — "put a shop online on AWS"</h3>
+  <p class="lead">If an interviewer asks <em>"how would you host a website on AWS?"</em>, walk through this:</p>
+  <ol class="steps">
+    <li><strong>Network first:</strong> create a <strong>VPC</strong> with public subnets (for web servers) and private subnets (for the database) across <strong>two Availability Zones</strong>.</li>
+    <li><strong>Compute:</strong> launch <strong>EC2</strong> instances for the website, in an <strong>Auto Scaling group</strong> behind a <strong>Load Balancer (ELB)</strong>.</li>
+    <li><strong>Database:</strong> use <strong>RDS</strong> (e.g. MySQL) in the private subnet, with Multi-AZ enabled for failover.</li>
+    <li><strong>Files:</strong> keep product images and static assets in <strong>S3</strong>, delivered worldwide via <strong>CloudFront</strong>.</li>
+    <li><strong>Domain:</strong> point the domain to the site with <strong>Route 53</strong>, and use an SSL certificate (ACM) for HTTPS.</li>
+    <li><strong>Security:</strong> tight <strong>IAM</strong> roles, security groups that open only needed ports (443 to the world, DB only from web servers), encryption via <strong>KMS</strong>.</li>
+    <li><strong>Operations:</strong> <strong>CloudWatch</strong> alarms + dashboards, <strong>AWS Backup</strong> schedules, and budget alerts.</li>
+  </ol>
+  <div class="note tip"><strong>Why this impresses:</strong> it shows you think in layers — network → compute → data → delivery → security → operations — which is exactly how real cloud engineers (and the AWS Well-Architected review) work.</div>
+</section>
+
+<!-- ============ 4 AI/ML ============ -->
+<section id="aiml">
+  <h2><span class="n">4</span> AI / ML — From Zero</h2>
+
+  <h3>4.1 The vocabulary (get this right and you're ahead)</h3>
+  <table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td><strong>AI</strong> (Artificial Intelligence)</td><td>Machines doing tasks that normally need human intelligence.</td></tr>
+    <tr><td><strong>ML</strong> (Machine Learning)</td><td>A subset of AI: machines <em>learn patterns from data</em> instead of being hard-coded.</td></tr>
+    <tr><td><strong>Deep Learning</strong></td><td>A subset of ML using neural networks with many layers; great for images, speech, language.</td></tr>
+    <tr><td><strong>Generative AI / LLM</strong></td><td>AI that <em>creates</em> new content (text, images). LLM = Large Language Model (e.g. the tech behind chatbots).</td></tr>
+    <tr><td><strong>Model</strong></td><td>The trained "brain" that makes predictions.</td></tr>
+    <tr><td><strong>Training</strong></td><td>Teaching a model by showing it lots of data.</td></tr>
+    <tr><td><strong>Inference</strong></td><td>Using the trained model to make a prediction on new data.</td></tr>
+    <tr><td><strong>Dataset / Features / Labels</strong></td><td>Dataset = the data. Features = input columns. Label = the answer you want to predict.</td></tr>
+  </table>
+  <div class="rl">
+    <div class="rlt">AI you already use every day</div>
+    <p><strong>YouTube/Netflix</strong> recommending your next video · <strong>Google Maps</strong> predicting "25 min with traffic" · <strong>face unlock</strong> on your phone · <strong>Gmail</strong> moving spam out of your inbox · <strong>UPI/banking apps</strong> blocking a suspicious transaction in milliseconds (fraud detection) · <strong>ChatGPT/Claude</strong> writing text. If an interviewer asks "what is ML?", naming two of these makes the answer concrete and confident.</p>
+  </div>
+
+  <h3>4.2 The 3 types of machine learning</h3>
+  <div class="grid cols3">
+    <div class="card"><h4>Supervised</h4><p style="margin:0">Learn from <strong>labelled</strong> data (input + correct answer). e.g. spam/not-spam, price prediction.</p></div>
+    <div class="card"><h4>Unsupervised</h4><p style="margin:0">Find patterns in <strong>unlabelled</strong> data. e.g. grouping customers (clustering).</p></div>
+    <div class="card"><h4>Reinforcement</h4><p style="margin:0">Learn by <strong>trial &amp; error</strong> with rewards. e.g. game-playing, robotics.</p></div>
+  </div>
+  <p style="margin-top:12px"><strong>Supervised splits into two:</strong> <em>Classification</em> (predict a category — spam/not spam) and <em>Regression</em> (predict a number — house price).</p>
+  <div class="rl">
+    <div class="rlt">Real-life examples of each type</div>
+    <p><strong>Supervised:</strong> a bank trains a model on 10 years of past loans (each labelled "repaid" or "defaulted") to predict whether a new applicant is safe — classification. The same bank predicts <em>how much</em> a customer will spend next month — regression.</p>
+    <p><strong>Unsupervised:</strong> an e-commerce company feeds in millions of purchase histories with no labels; the model discovers natural groups — "bargain hunters", "premium buyers", "festival-only shoppers" — used for targeted marketing (clustering).</p>
+    <p><strong>Reinforcement:</strong> a delivery company's routing system tries routes, gets "rewarded" for faster deliveries, and gradually learns the best routes — the same idea behind game-playing AIs and self-driving cars.</p>
+  </div>
+
+  <h3>4.3 Two words interviewers love: overfitting &amp; underfitting</h3>
+  <ul class="clean">
+    <li><strong>Overfitting:</strong> model memorizes the training data (even the noise) → great on training data, bad on new data. Fix: more data, simpler model, regularization.</li>
+    <li><strong>Underfitting:</strong> model is too simple to capture the pattern → bad everywhere. Fix: more features, more complex model, train longer.</li>
+    <li>That's why we split data into <strong>training / validation / test</strong> sets — to check it works on data it has never seen.</li>
+  </ul>
+  <div class="rl">
+    <div class="rlt">Real-life analogy</div>
+    <p><strong>Overfitting is a student who memorizes last year's question paper.</strong> They score 100% on those exact questions but fail the real exam when the questions change. <strong>Underfitting is the student who barely studied</strong> — fails both the practice paper and the exam. A well-trained model is the student who understood the <em>concepts</em>: good on practice, good on the real exam. The train/test split is the "real exam" that exposes memorizers.</p>
+  </div>
+
+  <h3>4.4 How you measure a model</h3>
+  <p><strong>Accuracy</strong> (overall correct), <strong>Precision</strong> (of the ones it flagged positive, how many were right), <strong>Recall</strong> (of all real positives, how many it caught), <strong>F1</strong> (balance of precision &amp; recall). For regression: <strong>MAE / RMSE</strong> (how far off the numbers are).</p>
+
+  <h3>4.5 AWS AI/ML services (map the service to the job)</h3>
+  <table>
+    <tr><th>Service</th><th>Use it for</th><th>Real-life example</th></tr>
+    <tr><td><strong>SageMaker</strong></td><td>The full platform to build, train and deploy your own ML models.</td><td>Train a model that predicts which customers are about to cancel their subscription.</td></tr>
+    <tr><td><strong>Bedrock</strong></td><td>Use ready-made foundation models / LLMs (Generative AI) via an API.</td><td>Build a customer-support chatbot in days without training any model.</td></tr>
+    <tr><td><strong>Rekognition</strong></td><td>Image &amp; video analysis (detect objects, faces).</td><td>KYC: check the selfie matches the ID-card photo.</td></tr>
+    <tr><td><strong>Comprehend</strong></td><td>Natural language — sentiment, key phrases, entities in text.</td><td>Scan 50,000 product reviews and report what customers complain about most.</td></tr>
+    <tr><td><strong>Textract</strong></td><td>Extract text/data from scanned documents &amp; forms.</td><td>Read thousands of scanned invoices into a database automatically.</td></tr>
+    <tr><td><strong>Transcribe / Polly</strong></td><td>Speech-to-text (Transcribe) / text-to-speech (Polly).</td><td>Turn call-centre recordings into searchable text / give an app a natural voice.</td></tr>
+    <tr><td><strong>Lex</strong></td><td>Build chatbots &amp; voice assistants.</td><td>A bank bot that answers "what's my balance?" in the app.</td></tr>
+  </table>
+
+  <h3>4.6 Generative AI &amp; RAG (hot topic right now)</h3>
+  <ul class="clean">
+    <li><strong>LLM</strong> predicts the next word very well, so it can write, summarize, answer and code.</li>
+    <li><strong>Prompt</strong> = the instruction you give it.</li>
+    <li><strong>Hallucination</strong> = when the model confidently makes something up. A real risk to manage.</li>
+    <li><strong>RAG (Retrieval-Augmented Generation):</strong> give the model your <em>own</em> documents at question time so it answers from real company data instead of guessing. This is how most business AI assistants are built.</li>
+    <li><strong>AI-assisted development</strong> (an Operisoft blog theme): using AI tools to write code, catch bugs and speed up delivery — "removing low-value friction," not replacing developers.</li>
+  </ul>
+  <div class="rl">
+    <div class="rlt">Real-life examples</div>
+    <p><strong>RAG in action:</strong> a company's HR chatbot. An employee asks "how many paid leaves do I get after 2 years?" — the system fetches the actual paragraph from the company's HR policy PDF and the LLM answers from <em>that text</em>, even quoting the policy. Without RAG, the model would just guess a generic answer.</p>
+    <p><strong>Why hallucination matters:</strong> in a famous 2023 case, a New York lawyer submitted a court filing written with ChatGPT — it cited six legal cases that <em>did not exist</em>, and the lawyer was sanctioned. That story is the perfect interview answer for "what are the risks of GenAI?" — and exactly the problem RAG, guardrails and human review are meant to prevent.</p>
+  </div>
+
+  <h3>4.7 A mini ML project, step by step (example: predicting house prices)</h3>
+  <ol class="steps">
+    <li><strong>Understand the problem:</strong> predict a house's selling price → a number → <em>regression</em>, supervised learning.</li>
+    <li><strong>Collect data:</strong> past sales — area (sq ft), bedrooms, location, age of house, and the actual sale price (the label).</li>
+    <li><strong>Clean &amp; prepare:</strong> fix missing values, remove weird rows (a 10 sq ft house), convert text like location into numbers. <em>In real projects this is 60–80% of the work.</em></li>
+    <li><strong>Split the data:</strong> e.g. 80% for training, 20% kept aside for testing.</li>
+    <li><strong>Train:</strong> fit a model (start simple — linear regression) on the training set, e.g. in SageMaker.</li>
+    <li><strong>Evaluate:</strong> check error (RMSE/MAE) on the unseen test set — this catches overfitting.</li>
+    <li><strong>Deploy:</strong> publish the model as an API endpoint so the app can send house details and get a price (inference).</li>
+    <li><strong>Monitor &amp; retrain:</strong> prices change over time ("data drift"), so retrain with fresh data regularly.</li>
+  </ol>
+  <div class="note tip"><strong>Interview gold:</strong> being able to recite these 8 steps calmly answers "how would you approach an ML problem?" better than any formula — it shows you understand the <em>process</em>, which is what matters for a fresher.</div>
+</section>
+
+<!-- ============ 5 Q&A ============ -->
+<section id="qa">
+  <h2><span class="n">5</span> Interview Q&amp;A Bank (with model answers)</h2>
+  <p class="lead">Click each question to reveal a model answer. Read it, then try to say it in <em>your own words</em> — don't memorize word-for-word.</p>
+
+  <div class="cat">About the company / HR</div>
+  <details class="qa"><summary>Tell me what you know about Operisoft.</summary>
+    <div class="ans">Operisoft is an IT services and products company focused on three areas — Cloud, AI and Cybersecurity. On the services side they help businesses build and run infrastructure on AWS, do DevOps, data &amp; analytics, backup &amp; disaster recovery, and security. They also build their own products like MizanGRC (governance, risk &amp; compliance), CloudLabs, a Compliance Scanner, Phishing Simulation and Dark Web Monitoring. They're an AWS partner and also partner with Veeam, CrowdStrike, Zscaler, MongoDB and Motadata, and they serve industries like healthcare, finance, retail and manufacturing.</div>
+  </details>
+  <details class="qa"><summary>Why do you want to join Operisoft?</summary>
+    <div class="ans">Frame it around learning + fit: "Operisoft works across cloud, AI and security with real AWS projects and strong partners, which is exactly the area I want to build my career in. As someone starting out, I'd get to learn cloud and AI from experienced people on real client problems, and contribute by being hands-on, dependable and quick to learn." Mention one specific thing you liked (their AWS focus, their own products, a blog you read).</div>
+  </details>
+  <details class="qa"><summary>What are your strengths and weaknesses?</summary>
+    <div class="ans">Pick a real strength relevant to the job (fast learner, strong fundamentals, consistent) with a one-line example. For weakness, pick something genuine and show you're improving it ("I'm still building hands-on AWS experience, so I've been doing labs/free-tier projects to close that gap"). Never say "I have no weaknesses."</div>
+  </details>
+  <details class="qa"><summary>Where do you see yourself in 2–3 years?</summary>
+    <div class="ans">"Growing into a confident cloud/AI engineer who can own tasks end-to-end — comfortable with AWS, maybe AWS-certified, and contributing to AI projects. I want to grow with the company and take on more responsibility as I prove myself."</div>
+  </details>
+
+  <div class="cat" style="margin-top:18px">AWS / Cloud technical</div>
+  <details class="qa"><summary>What is cloud computing and why do companies use it?</summary>
+    <div class="ans">Cloud computing is renting computing resources (servers, storage, networking) over the internet and paying only for what you use, instead of buying and maintaining your own hardware. Companies use it because it removes big upfront costs, scales up or down instantly with demand, is available globally, and comes with built-in security and reliability tools.</div>
+  </details>
+  <details class="qa"><summary>Explain IaaS, PaaS and SaaS.</summary>
+    <div class="ans">IaaS gives raw infrastructure you manage yourself (EC2). PaaS gives a ready platform to run your code while the provider manages the servers (Elastic Beanstalk). SaaS is finished software you just use (Gmail). Analogy: IaaS = empty apartment, PaaS = serviced apartment, SaaS = hotel room.</div>
+  </details>
+  <details class="qa"><summary>Difference between a Region and an Availability Zone?</summary>
+    <div class="ans">A Region is a geographic location (like Mumbai). An Availability Zone is one or more isolated data centres within that Region. You deploy across multiple AZs so that if one data centre fails, your application keeps running — that's high availability.</div>
+  </details>
+  <details class="qa"><summary>What is EC2 and what is S3?</summary>
+    <div class="ans">EC2 is a virtual server in the cloud where you run applications; you pick CPU, RAM and OS. S3 is object storage for files (images, backups, logs) organized in "buckets," with virtually unlimited capacity and high durability. EC2 = compute, S3 = storage.</div>
+  </details>
+  <details class="qa"><summary>Explain the Shared Responsibility Model.</summary>
+    <div class="ans">AWS secures the cloud itself — the physical data centres, hardware and global network ("security OF the cloud"). The customer secures what they put in the cloud — their data, IAM permissions, OS patches, firewall/security-group rules and encryption ("security IN the cloud").</div>
+  </details>
+  <details class="qa"><summary>What is IAM and what does "least privilege" mean?</summary>
+    <div class="ans">IAM (Identity and Access Management) controls who can access what in AWS using users, groups, roles and policies. Least privilege means giving each identity only the permissions it actually needs and nothing more, which limits damage if credentials are compromised. Also enable MFA and avoid using the root account for daily tasks.</div>
+  </details>
+  <details class="qa"><summary>How would you reduce a high AWS bill?</summary>
+    <div class="ans">Right-size over-provisioned instances; use Reserved Instances or Savings Plans for steady workloads and Spot for flexible jobs; delete unused resources (idle volumes, old snapshots, unattached IPs); add S3 lifecycle rules to move cold data to Glacier; and monitor with Cost Explorer and Budgets. Operisoft actually offers this as a service.</div>
+  </details>
+  <details class="qa"><summary>What are RTO and RPO in backup/DR?</summary>
+    <div class="ans">RPO (Recovery Point Objective) is how much data, measured in time, you can afford to lose — it sets how often you back up. RTO (Recovery Time Objective) is how quickly you must restore service after a failure. Lower numbers mean stricter (and usually costlier) solutions.</div>
+  </details>
+  <details class="qa"><summary>What is a VPC? What is a security group?</summary>
+    <div class="ans">A VPC is your own isolated private network inside AWS where your resources live. A security group is a virtual firewall attached to resources like EC2 that controls inbound and outbound traffic by rules (ports, IP ranges). Security groups are stateful — return traffic is automatically allowed.</div>
+  </details>
+  <details class="qa"><summary>What is Auto Scaling and a Load Balancer?</summary>
+    <div class="ans">Auto Scaling automatically adds or removes EC2 instances based on demand, so you have enough capacity without overpaying. A Load Balancer (ELB) distributes incoming traffic evenly across multiple instances, improving availability and performance. They're commonly used together. <em>Real-life example:</em> during a festival sale an e-commerce site scales from 3 servers to 20 at 8 pm, and back down to 3 at night — users never see a crash, and the company never pays for 20 servers around the clock.</div>
+  </details>
+  <details class="qa"><summary>What is serverless computing? Give an example.</summary>
+    <div class="ans">Serverless means you run code without creating or managing any server — AWS runs it for you and you pay only when the code actually executes. The main service is Lambda. <em>Real-life example:</em> a user uploads a profile photo to S3 → that upload automatically triggers a Lambda function that resizes the image into thumbnail sizes → it finishes in half a second and you're billed for just that half second. No server sits idle at night costing money.</div>
+  </details>
+  <details class="qa"><summary>Scenario: the client's website becomes very slow every evening and crashed during their last big sale. What do you suggest?</summary>
+    <div class="ans">Structure the answer: (1) <strong>Diagnose</strong> — check CloudWatch metrics to see what's saturating (CPU? database? network?) at peak time. (2) <strong>Scale</strong> — put the web servers in an Auto Scaling group behind a Load Balancer so capacity grows with evening traffic. (3) <strong>Offload</strong> — serve images/static files from S3 + CloudFront so the servers do less work, and add caching for the database. (4) <strong>Prepare</strong> — load-test before the next sale and set CloudWatch alarms. This shows you diagnose first and fix the cause, not just "add bigger servers."</div>
+  </details>
+  <details class="qa"><summary>Scenario: a developer accidentally pushed AWS access keys to a public GitHub repo. What should happen?</summary>
+    <div class="ans">Act immediately: (1) <strong>deactivate/rotate the leaked keys</strong> in IAM right away — bots scan GitHub for keys within minutes; (2) check <strong>CloudTrail</strong> logs for any unauthorized activity (new instances, IAM changes) and clean up anything suspicious; (3) inform the team/security lead honestly — speed matters more than blame; (4) prevent repeats: never hard-code keys — use IAM roles or Secrets Manager, and add secret-scanning to the repo. <em>Real-life context:</em> leaked keys are one of the most common causes of surprise five-figure AWS bills from crypto-mining bots.</div>
+  </details>
+  <details class="qa"><summary>What is DNS, and what happens when someone opens operisoft.com?</summary>
+    <div class="ans">DNS is the internet's phonebook — it translates a human-friendly name (operisoft.com) into a machine address (an IP). When a user opens the site: the browser asks DNS (Route 53) for the IP → connects to that address over HTTPS → the request may hit a CDN edge (CloudFront) which serves cached content fast or forwards to the origin server → the server responds and the page renders. Knowing this flow shows you understand how the pieces — Route 53, CloudFront, ELB, EC2 — fit together.</div>
+  </details>
+
+  <div class="cat" style="margin-top:18px">AI / ML technical</div>
+  <details class="qa"><summary>Difference between AI, ML and Deep Learning?</summary>
+    <div class="ans">AI is the broad goal of machines doing intelligent tasks. ML is a subset where machines learn patterns from data rather than being explicitly programmed. Deep Learning is a subset of ML using multi-layer neural networks, especially good for images, speech and language.</div>
+  </details>
+  <details class="qa"><summary>Supervised vs unsupervised learning?</summary>
+    <div class="ans">Supervised learning uses labelled data (inputs with known answers) to predict outcomes — e.g. spam detection or price prediction. Unsupervised learning uses unlabelled data to find hidden patterns — e.g. grouping similar customers (clustering). Reinforcement learning is a third type that learns by trial and error with rewards.</div>
+  </details>
+  <details class="qa"><summary>What is overfitting and how do you prevent it?</summary>
+    <div class="ans">Overfitting is when a model learns the training data too well — including its noise — so it performs great on training data but poorly on new data. <em>Analogy:</em> a student who memorizes last year's question paper scores full marks on it but fails the real exam. Prevent it with more/better data, a simpler model, regularization, and by validating on a separate test set the model has never seen.</div>
+  </details>
+  <details class="qa"><summary>What's the difference between precision and recall? Give a real example.</summary>
+    <div class="ans">Precision: of everything the model flagged positive, how many were actually positive. Recall: of all the real positives, how many the model caught. <em>Real example — a cancer screening test:</em> high recall matters most, because missing a real patient (false negative) is dangerous — you accept some false alarms. <em>A spam filter is the opposite:</em> precision matters more, because wrongly sending a real email (like a job offer!) to spam is worse than letting one spam message through. Choosing the right metric for the situation is the mark of someone who understands ML, not just definitions.</div>
+  </details>
+  <details class="qa"><summary>How would you start a brand-new ML project for a client?</summary>
+    <div class="ans">Follow the standard workflow: (1) understand the business problem and define what "success" means; (2) collect and clean the data — usually the biggest part of the work; (3) split into training and test sets; (4) start with a simple model as a baseline; (5) evaluate on the unseen test set with the right metric; (6) deploy it as an endpoint (e.g. SageMaker) so the app can use it; (7) monitor and retrain as data changes. <em>Example:</em> for "predict which customers will leave us," the label is past customers who left, features are usage/complaints/tenure, it's a classification problem, and the output helps the client call at-risk customers before they go.</div>
+  </details>
+  <details class="qa"><summary>What are the risks of Generative AI in business, and how do you control them?</summary>
+    <div class="ans">Main risks: <strong>hallucination</strong> (confident wrong answers — e.g. the 2023 case where a lawyer filed six AI-invented court cases and was sanctioned), <strong>data privacy</strong> (employees pasting confidential data into public tools), <strong>bias</strong> in outputs, and over-trusting the model. Controls: ground answers in real company documents with RAG, add guardrails and human review for important outputs, use enterprise/private model access (e.g. Amazon Bedrock) instead of public tools, and test accuracy before launch.</div>
+  </details>
+  <details class="qa"><summary>What is the difference between training and inference?</summary>
+    <div class="ans">Training is the learning phase where the model studies lots of data to find patterns. Inference is the usage phase where the trained model makes predictions on new, unseen data. Training is compute-heavy and done occasionally; inference happens every time the model is used.</div>
+  </details>
+  <details class="qa"><summary>What is Generative AI / an LLM, and what is RAG?</summary>
+    <div class="ans">Generative AI creates new content like text or images; an LLM (Large Language Model) is the technology behind text chatbots — it predicts text very well. RAG (Retrieval-Augmented Generation) feeds the model your own documents at question time so it answers from real, trusted data instead of guessing — reducing hallucinations. On AWS you'd use Bedrock for LLMs and SageMaker to build custom models.</div>
+  </details>
+  <details class="qa"><summary>Name some AWS AI services and what they do.</summary>
+    <div class="ans">SageMaker (build/train/deploy custom ML models), Bedrock (use ready foundation models / GenAI), Rekognition (image &amp; video analysis), Comprehend (text/sentiment analysis), Textract (extract data from documents), Transcribe/Polly (speech-to-text / text-to-speech), and Lex (chatbots).</div>
+  </details>
+  <details class="qa"><summary>A scenario: a client wants a chatbot that answers questions from their internal PDFs. How would you approach it?</summary>
+    <div class="ans">"I'd use a RAG approach: first process their PDFs (e.g. with Textract if scanned), split the text into chunks and store them as embeddings in a vector store. When a user asks a question, retrieve the most relevant chunks and pass them, with the question, to an LLM (via Amazon Bedrock) to generate a grounded answer. This keeps answers based on their real documents and reduces hallucinations. I'd add guardrails and test accuracy before launch." (Showing a clear, structured approach matters more than perfect detail.)</div>
+  </details>
+</section>
+
+<!-- ============ 6 QUIZ ============ -->
+<section id="quiz">
+  <h2><span class="n">6</span> Test Yourself — MCQ Quiz (auto-scored /10)</h2>
+  <p class="lead">Pick one answer per question, then press <strong>Submit</strong>. You'll get your score out of 10 and an explanation for each. Press <strong>Reset</strong> to try again.</p>
+
+  <div id="quizform">
+    <!-- Q1 -->
+    <div class="q" data-correct="b">
+      <div class="qt">1. Operisoft's three core focus areas are:</div>
+      <label><input type="radio" name="q1" value="a">Gaming, Social media, Hardware</label>
+      <label><input type="radio" name="q1" value="b">Cloud, AI, and Cybersecurity</label>
+      <label><input type="radio" name="q1" value="c">Accounting, HR, and Marketing</label>
+      <label><input type="radio" name="q1" value="d">Mobile phones, TVs, Laptops</label>
+      <div class="exp">✔ <strong>Cloud, AI, and Cybersecurity</strong> — Operisoft's tagline is these three "unified under one roof."</div>
+    </div>
+    <!-- Q2 -->
+    <div class="q" data-correct="c">
+      <div class="qt">2. In AWS, what is <strong>S3</strong> mainly used for?</div>
+      <label><input type="radio" name="q2" value="a">Running virtual servers</label>
+      <label><input type="radio" name="q2" value="b">Managing user permissions</label>
+      <label><input type="radio" name="q2" value="c">Object storage for files (buckets)</label>
+      <label><input type="radio" name="q2" value="d">Sending emails</label>
+      <div class="exp">✔ <strong>Object storage</strong> — S3 stores files in buckets. EC2 runs servers; IAM manages permissions.</div>
+    </div>
+    <!-- Q3 -->
+    <div class="q" data-correct="a">
+      <div class="qt">3. The Shared Responsibility Model says AWS is responsible for:</div>
+      <label><input type="radio" name="q3" value="a">Security OF the cloud (data centres, hardware, network)</label>
+      <label><input type="radio" name="q3" value="b">Your IAM users and passwords</label>
+      <label><input type="radio" name="q3" value="c">Patching your EC2 operating system</label>
+      <label><input type="radio" name="q3" value="d">Your application's data</label>
+      <div class="exp">✔ AWS secures <strong>OF the cloud</strong>. The customer secures <em>IN</em> the cloud (data, IAM, OS patches).</div>
+    </div>
+    <!-- Q4 -->
+    <div class="q" data-correct="d">
+      <div class="qt">4. Which best describes <strong>supervised learning</strong>?</div>
+      <label><input type="radio" name="q4" value="a">Learning by trial and error with rewards</label>
+      <label><input type="radio" name="q4" value="b">Finding patterns in unlabelled data</label>
+      <label><input type="radio" name="q4" value="c">Writing rules by hand</label>
+      <label><input type="radio" name="q4" value="d">Learning from labelled data (inputs with known answers)</label>
+      <div class="exp">✔ Supervised = <strong>labelled data</strong>. Unlabelled = unsupervised; rewards = reinforcement.</div>
+    </div>
+    <!-- Q5 -->
+    <div class="q" data-correct="b">
+      <div class="qt">5. An <strong>Availability Zone</strong> is:</div>
+      <label><input type="radio" name="q5" value="a">A large geographic region</label>
+      <label><input type="radio" name="q5" value="b">One or more isolated data centres inside a Region</label>
+      <label><input type="radio" name="q5" value="c">A type of database</label>
+      <label><input type="radio" name="q5" value="d">A billing plan</label>
+      <div class="exp">✔ A <strong>Region</strong> contains multiple <strong>AZs</strong> (isolated data centres). Multi-AZ = high availability.</div>
+    </div>
+    <!-- Q6 -->
+    <div class="q" data-correct="c">
+      <div class="qt">6. <strong>Overfitting</strong> means a model:</div>
+      <label><input type="radio" name="q6" value="a">Is too simple and performs badly everywhere</label>
+      <label><input type="radio" name="q6" value="b">Has too little training data to run</label>
+      <label><input type="radio" name="q6" value="c">Memorizes training data and fails on new data</label>
+      <label><input type="radio" name="q6" value="d">Runs too slowly</label>
+      <div class="exp">✔ Overfitting = great on training data, poor on new data. "Too simple" is <em>under</em>fitting.</div>
+    </div>
+    <!-- Q7 -->
+    <div class="q" data-correct="a">
+      <div class="qt">7. Which AWS service lets you run code <strong>without managing servers</strong>?</div>
+      <label><input type="radio" name="q7" value="a">Lambda</label>
+      <label><input type="radio" name="q7" value="b">EC2</label>
+      <label><input type="radio" name="q7" value="c">S3</label>
+      <label><input type="radio" name="q7" value="d">VPC</label>
+      <div class="exp">✔ <strong>Lambda</strong> is serverless — you run code and pay per execution. EC2 needs you to manage the server.</div>
+    </div>
+    <!-- Q8 -->
+    <div class="q" data-correct="b">
+      <div class="qt">8. <strong>RPO</strong> (Recovery Point Objective) answers the question:</div>
+      <label><input type="radio" name="q8" value="a">How fast must we be back online?</label>
+      <label><input type="radio" name="q8" value="b">How much data (time) can we afford to lose?</label>
+      <label><input type="radio" name="q8" value="c">How many users can log in?</label>
+      <label><input type="radio" name="q8" value="d">How much does the server cost?</label>
+      <div class="exp">✔ RPO = acceptable data loss (sets backup frequency). "How fast back online" is <strong>RTO</strong>.</div>
+    </div>
+    <!-- Q9 -->
+    <div class="q" data-correct="d">
+      <div class="qt">9. <strong>RAG</strong> (Retrieval-Augmented Generation) is used to:</div>
+      <label><input type="radio" name="q9" value="a">Make servers cheaper</label>
+      <label><input type="radio" name="q9" value="b">Encrypt data at rest</label>
+      <label><input type="radio" name="q9" value="c">Load balance traffic</label>
+      <label><input type="radio" name="q9" value="d">Let an LLM answer from your own documents (reducing hallucination)</label>
+      <div class="exp">✔ RAG feeds your real documents to the model at question time, grounding its answers.</div>
+    </div>
+    <!-- Q10 -->
+    <div class="q" data-correct="a">
+      <div class="qt">10. Which AWS service is the full platform to <strong>build, train and deploy your own ML models</strong>?</div>
+      <label><input type="radio" name="q10" value="a">SageMaker</label>
+      <label><input type="radio" name="q10" value="b">CloudFront</label>
+      <label><input type="radio" name="q10" value="c">Route 53</label>
+      <label><input type="radio" name="q10" value="d">Polly</label>
+      <div class="exp">✔ <strong>SageMaker</strong>. Bedrock = ready-made LLMs; Polly = text-to-speech; CloudFront = CDN.</div>
+    </div>
+
+    <div id="scorebox">
+      <div class="big" id="scorenum">0 / 10</div>
+      <div id="scoremsg"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn" onclick="gradeQuiz()">Submit &amp; Score</button>
+      <button class="btn ghost" onclick="resetQuiz()">Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 WRITTEN ============ -->
+<section id="written">
+  <h2><span class="n">7</span> Written Practice</h2>
+  <p class="lead">Write your answer to each question in your own words, then open <strong>★ Reveal model answer</strong> to compare and see what a strong answer includes. Aim to cover the same key points and keywords.</p>
+
+  <div class="roundhead">Round A — Company &amp; motivation</div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">1</span><span>In 4–5 sentences, explain what Operisoft does, and name two of its products and two partners.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Operisoft is an IT services and products company focused on Cloud, AI and Cybersecurity. On the services side it helps businesses build and run infrastructure on AWS, plus DevOps, data &amp; analytics, backup &amp; disaster recovery and security. It also builds its own products — for example <strong>MizanGRC</strong> (governance, risk &amp; compliance) and a <strong>Phishing Simulation</strong> tool. It partners with companies like <strong>AWS</strong> and <strong>Veeam</strong> (also CrowdStrike, Zscaler, MongoDB, Motadata) and serves industries such as healthcare, finance and retail.</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">2</span><span>Why do you want to work at Operisoft as a Cloud/AI engineer? (Give a genuine, specific answer.)</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Frame it around learning + fit: "Operisoft works across cloud, AI and security on real AWS projects with strong partners — exactly the area I want to build my career in. As someone starting out I'd learn from experienced engineers on real client problems, and contribute by being hands-on, reliable and quick to learn." Mention one specific thing you liked (their AWS focus, their own products, or a blog you read).</div>
+    </details>
+  </div>
+
+  <div class="roundhead">Round B — Cloud / AWS</div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">3</span><span>Explain cloud computing to a non-technical person, and give two benefits.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Cloud computing means renting computers, storage and networking over the internet and paying only for what you use, instead of buying and maintaining your own hardware. Two benefits: no big upfront cost (pay-as-you-go), and it scales up or down instantly with demand. Other benefits include global reach, high availability and built-in security tools.</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">4</span><span>What's the difference between EC2, S3 and IAM? One line each.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model"><strong>EC2</strong> = virtual servers in the cloud to run applications (compute). <strong>S3</strong> = object storage for files, kept in buckets (storage). <strong>IAM</strong> = controls who can access what in AWS via users, groups, roles and policies (security).</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">5</span><span>A client's AWS bill is too high. List 3 things you'd check or do to reduce it.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Any three of: right-size over-provisioned instances; use Reserved Instances / Savings Plans for steady workloads (and Spot for flexible jobs); delete unused resources (idle EBS volumes, old snapshots, unattached Elastic IPs); add S3 lifecycle rules to move cold data to Glacier; and monitor spend with Cost Explorer and Budgets.</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">6</span><span>Explain the Shared Responsibility Model in your own words.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Security is split between AWS and the customer. AWS secures the cloud itself — the physical data centres, hardware and global network ("security OF the cloud"). The customer secures what they put in it — their data, IAM permissions, OS patches, firewall/security-group rules and encryption ("security IN the cloud").</div>
+    </details>
+  </div>
+
+  <div class="roundhead">Round C — AI / ML</div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">7</span><span>Explain the difference between AI, ML and Deep Learning.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">AI is the broad goal of machines doing intelligent tasks. ML is a subset of AI where machines learn patterns from data instead of being explicitly programmed. Deep Learning is a subset of ML that uses multi-layer neural networks, especially strong for images, speech and language.</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">8</span><span>What is overfitting, and how would you reduce it?</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Overfitting is when a model learns the training data too well — including its noise — so it performs great on training data but poorly on new, unseen data. Reduce it with more/better data, a simpler model, regularization, and by validating on a separate test set.</div>
+    </details>
+  </div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">9</span><span>A client wants a chatbot that answers from their internal documents. Describe your approach in a few steps.</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Use a RAG approach: (1) process the documents (e.g. Textract for scanned files); (2) split the text into chunks and store them as embeddings in a vector store; (3) when a user asks a question, retrieve the most relevant chunks; (4) pass those chunks plus the question to an LLM (via Amazon Bedrock) to generate a grounded answer; (5) add guardrails and test accuracy before launch. This keeps answers based on the client's real data and reduces hallucinations.</div>
+    </details>
+  </div>
+
+  <div class="roundhead">Round D — Behavioural</div>
+
+  <div class="wq">
+    <div class="wqt"><span class="num">10</span><span>"Tell me about a time you learned something difficult quickly." (Use STAR: Situation, Task, Action, Result.)</span></div>
+    <textarea placeholder="Write your answer here..."></textarea>
+    <details class="reveal"><summary>Reveal model answer</summary>
+      <div class="model">Use your own real example in STAR form: <strong>Situation</strong> — the context and what was hard; <strong>Task</strong> — what you had to achieve; <strong>Action</strong> — the concrete steps you took to learn it fast (broke it down, practiced, asked for help, built something); <strong>Result</strong> — the outcome, ideally with a measurable or clear positive end. Keep it to ~4–6 sentences and end on the result.</div>
+    </details>
+  </div>
+
+  <div class="note tip" style="margin-top:16px"><strong>Tip:</strong> Strong answers are <em>structured</em> (point 1, 2, 3), use the right <em>keywords</em> (high availability, least privilege, overfitting, RAG), and finish with a short <em>example</em> or <em>result</em>.</div>
+</section>
+
+<!-- ============ 8 TIPS ============ -->
+<section id="tips">
+  <h2><span class="n">8</span> Interview-Day Playbook</h2>
+  <div class="grid cols2">
+    <div class="card">
+      <h4>Before</h4>
+      <ul class="clean">
+        <li>Re-read Section 1 (company) — know their services, 2 products, 3 partners.</li>
+        <li>Revise the AWS core-services table and the AI/ML vocabulary.</li>
+        <li>Prepare 2 questions to ask them (see below).</li>
+        <li>Have a 60-second "tell me about yourself" ready.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>During</h4>
+      <ul class="clean">
+        <li>Think out loud — they value reasoning over a memorized answer.</li>
+        <li>If you don't know, say so honestly, then say how you'd find out.</li>
+        <li>Use keywords (high availability, least privilege, overfitting, RAG).</li>
+        <li>Stay calm; it's fine to pause and structure your answer.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>60-second revision sheet (read just before you walk in)</h3>
+  <div class="card">
+    <ul class="clean" style="margin:0">
+      <li><strong>Company:</strong> Operisoft = Cloud + AI + Cybersecurity. AWS partner. Products: MizanGRC, CloudLabs, Phishing Simulation, Dark Web Monitoring. Partners: AWS, Veeam, CrowdStrike, Zscaler, MongoDB, Motadata.</li>
+      <li><strong>Cloud in one line:</strong> renting computing over the internet, pay for what you use — like electricity.</li>
+      <li><strong>Core services:</strong> EC2 compute · S3 storage · RDS database · VPC network · IAM permissions · Lambda serverless · CloudWatch monitoring · CloudFront CDN · Route 53 DNS.</li>
+      <li><strong>Shared responsibility:</strong> AWS secures the building; you lock your own flat.</li>
+      <li><strong>High availability:</strong> multiple AZs + Load Balancer + Auto Scaling.</li>
+      <li><strong>Backup:</strong> RPO = data you can lose · RTO = time to recover · 3-2-1 rule.</li>
+      <li><strong>Cost cutting:</strong> right-size, reserve, spot, delete unused, lifecycle to Glacier.</li>
+      <li><strong>ML:</strong> supervised = labelled, unsupervised = patterns, reinforcement = rewards. Overfitting = memorizing the question paper.</li>
+      <li><strong>GenAI:</strong> LLM predicts text · RAG = answer from your own documents · hallucination = confident nonsense (the lawyer's fake court cases).</li>
+      <li><strong>AWS AI:</strong> SageMaker = build your own · Bedrock = ready-made LLMs.</li>
+    </ul>
+  </div>
+
+  <h3>Smart questions to ask them</h3>
+  <ul class="clean">
+    <li>"What does a typical first project look like for someone in this role?"</li>
+    <li>"Which AWS certifications do you encourage, and does the team support learning?"</li>
+    <li>"How does the team balance cloud work with the newer AI/ML projects?"</li>
+  </ul>
+
+  <h3>The honesty line (use it freely)</h3>
+  <div class="note">"I haven't worked with that specific service yet, but based on what I understand it's used for ___, and here's how I'd approach learning/using it ___." — This turns an unknown into a positive.</div>
+</section>
+
+</main>
+
+<footer>
+  <p>Study pack built for your Operisoft Cloud &amp; AI/ML interview · Open this file any time to revise.<br>
+  Read Sections 1–4, rehearse the Q&amp;A, take the quiz, then practise writing answers in Section 7.</p>
+</footer>
+
+<script>
+function gradeQuiz(){
+  var qs=document.querySelectorAll('#quizform .q');
+  var score=0, answeredAll=true;
+  qs.forEach(function(q){
+    var correct=q.getAttribute('data-correct');
+    var chosen=q.querySelector('input:checked');
+    q.classList.add('answered');
+    // clear previous marks
+    q.querySelectorAll('label').forEach(function(l){l.classList.remove('correct','wrong');});
+    // mark correct label
+    var correctInput=q.querySelector('input[value="'+correct+'"]');
+    if(correctInput) correctInput.parentElement.classList.add('correct');
+    if(chosen){
+      if(chosen.value===correct){score++;}
+      else{chosen.parentElement.classList.add('wrong');}
+    }else{answeredAll=false;}
+  });
+  var box=document.getElementById('scorebox');
+  box.style.display='block';
+  document.getElementById('scorenum').textContent=score+' / 10';
+  var msg='';
+  if(score===10) msg='Perfect! You clearly know the fundamentals. 🎯';
+  else if(score>=8) msg='Excellent — strong grasp. Review the ones you missed and you\'re ready.';
+  else if(score>=6) msg='Good start. Re-read the sections above for the missed ones.';
+  else if(score>=4) msg='Keep going — revise Sections 3 & 4, then retry.';
+  else msg='No worries — read Sections 1–4 carefully, then take the quiz again.';
+  if(!answeredAll) msg+=' (You left some questions blank.)';
+  document.getElementById('scoremsg').textContent=msg;
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetQuiz(){
+  document.querySelectorAll('#quizform .q').forEach(function(q){
+    q.classList.remove('answered');
+    q.querySelectorAll('label').forEach(function(l){l.classList.remove('correct','wrong');});
+    q.querySelectorAll('input').forEach(function(i){i.checked=false;});
+  });
+  document.getElementById('scorebox').style.display='none';
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
