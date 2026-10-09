@@ -1,0 +1,1760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Go Practice Workbook</title>
+<meta name="description" content="Interview question workbook for Go fundamentals — matched to W3Schools topics. Solved answers, write-your-own practice, and 40 MCQs with instant checking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Workbook layout: one reading column, Go-cyan accent, exam-paper feel. */
+:root{
+  --bg:#f4f7f8; --surface:#ffffff; --surface2:#eaf1f3;
+  --ink:#152228; --muted:#53696f;
+  --accent:#00758d; --accent-soft:#d9eef3; --accent-ink:#00404e;
+  --border:#d8e2e5;
+  --green:#1e6b3a; --green-soft:#ddefe2;
+  --red:#a33a2e; --red-soft:#f7e3df;
+  --amber:#8a5a00; --amber-soft:#f6ecd4;
+  --code-bg:#0e1b21; --code-ink:#d7e6ec; --code-head:#13242c;
+  --sans:'Inter','Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1419; --surface:#101d23; --surface2:#16262e;
+    --ink:#e4eef2; --muted:#93aab2;
+    --accent:#45c6e8; --accent-soft:#0e2e38; --accent-ink:#aee3f2;
+    --border:#1f3540;
+    --green:#6fd398; --green-soft:#0f2a1a;
+    --red:#ef9a8c; --red-soft:#331712;
+    --amber:#e3b45c; --amber-soft:#2e2510;
+    --code-bg:#0a161c; --code-head:#0e2028;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1419; --surface:#101d23; --surface2:#16262e;
+  --ink:#e4eef2; --muted:#93aab2;
+  --accent:#45c6e8; --accent-soft:#0e2e38; --accent-ink:#aee3f2;
+  --border:#1f3540;
+  --green:#6fd398; --green-soft:#0f2a1a;
+  --red:#ef9a8c; --red-soft:#331712;
+  --amber:#e3b45c; --amber-soft:#2e2510;
+  --code-bg:#0a161c; --code-head:#0e2028;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+
+.topbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; display:flex; align-items:center; gap:12px;
+  padding:10px 20px; background:var(--surface); border-bottom:1px solid var(--border)}
+.topbar .brand{font-weight:800; font-size:17px}
+.topbar .brand b{color:var(--accent)}
+.topbar .score-pill{margin-left:auto; font-size:12.5px; color:var(--muted); background:var(--surface2); border:1px solid var(--border); border-radius:999px; padding:4px 12px; white-space:nowrap}
+.btn{font-family:var(--sans); font-size:13px; font-weight:600; background:var(--surface2); color:var(--ink);
+  border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+main{max-width:880px; margin:0 auto; padding:28px 20px 90px}
+h1,h2,h3{line-height:1.3; text-wrap:balance; margin:0}
+h1{font-size:clamp(28px,5vw,40px); font-weight:800}
+h2{font-size:clamp(21px,3.2vw,27px); font-weight:800}
+h3{font-size:17px; font-weight:700; margin-top:26px}
+p{margin:12px 0}
+a{color:var(--accent)}
+ul,ol{padding-left:24px} li{margin:5px 0}
+.eyebrow{font-size:11.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:4px}
+section.topic{background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:26px clamp(16px,3.5vw,36px) 32px; margin-top:30px; scroll-margin-top:70px}
+.w3{font-size:13px; color:var(--muted)}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--surface)); border:1px solid var(--border);
+  border-radius:16px; padding:clamp(22px,4vw,40px); margin-top:4px}
+.hero .sub{color:var(--muted); max-width:64ch; font-size:15px}
+.toc-box{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+.toc-box a{font-size:12.5px; font-weight:600; text-decoration:none; color:var(--accent-ink);
+  background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:4px 12px}
+.toc-box a:hover{border-color:var(--accent)}
+
+/* solved Q&A */
+.qa{border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:10px;
+  padding:14px 18px; margin:14px 0; background:var(--surface)}
+.qa .q{font-weight:700}
+.qa .q .qid{color:var(--accent); font-weight:800; font-family:var(--mono); font-size:.85em; margin-right:8px}
+.qa .a{background:var(--surface2); border-radius:8px; padding:10px 14px; margin-top:10px; font-size:14.5px}
+.qa .a::before{content:"Model answer: "; font-weight:800; color:var(--accent); font-size:11.5px; display:block; letter-spacing:.06em; text-transform:uppercase; margin-bottom:3px}
+.qa .why{font-size:13.5px; color:var(--muted); margin-top:8px}
+.qa .why::before{content:"Why this answer scores high: "; font-weight:700}
+
+/* practice (write-in) */
+.practice{border:1px dashed var(--accent); border-radius:12px; padding:16px 18px; margin:18px 0; background:var(--surface)}
+.practice .q{font-weight:700}
+.practice .q .qid{color:var(--amber); font-weight:800; font-family:var(--mono); font-size:.85em; margin-right:8px}
+.practice textarea{width:100%; min-height:110px; margin-top:10px; padding:10px 12px; font-family:var(--sans); font-size:14.5px;
+  color:var(--ink); background:var(--surface2); border:1px solid var(--border); border-radius:8px; resize:vertical; line-height:1.6}
+.practice textarea::placeholder{color:var(--muted)}
+.practice .saved{font-size:11.5px; color:var(--muted); margin-top:4px; min-height:15px}
+details.scheme{margin-top:10px; border:1px solid var(--border); border-radius:10px; background:var(--surface2); overflow:hidden}
+details.scheme>summary{cursor:pointer; font-weight:700; padding:9px 14px; list-style:none; font-size:13.5px}
+details.scheme>summary::before{content:"▸ "; color:var(--accent)}
+details.scheme[open]>summary::before{content:"▾ "}
+details.scheme>.body{padding:2px 14px 14px; font-size:14px}
+.marks{font-size:13.5px}
+.marks li{margin:3px 0}
+
+/* code */
+.code-card{border-radius:10px; overflow:hidden; margin:14px 0; border:1px solid var(--border)}
+.code-card .code-head{background:var(--code-head); color:#9fc3d0; font-family:var(--mono); font-size:12px; padding:6px 14px}
+.code-card pre{margin:0; background:var(--code-bg); color:var(--code-ink); padding:14px 16px; overflow-x:auto; font-family:var(--mono); font-size:13.5px; line-height:1.6}
+code{font-family:var(--mono)}
+p code,li code,.q code,.a code,label code,.why code,.body code{font-size:.88em; background:var(--surface2); border:1px solid var(--border); border-radius:5px; padding:1px 5px}
+
+/* boxes */
+.box{border-radius:10px; padding:13px 16px; margin:14px 0; border:1px solid var(--border); background:var(--surface2); font-size:14.5px}
+.box .box-t{font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px}
+.box.tip{background:var(--green-soft); border-color:var(--green)} .box.tip .box-t{color:var(--green)}
+.box.note{background:var(--amber-soft); border-color:var(--amber)} .box.note .box-t{color:var(--amber)}
+
+/* MCQ */
+.mcq{border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:16px 0; background:var(--surface)}
+.mcq .q{font-weight:700}
+.mcq .q .qid{color:var(--accent); font-weight:800; font-family:var(--mono); font-size:.85em; margin-right:8px}
+.mcq .opts{display:flex; flex-direction:column; gap:6px; margin-top:10px}
+.mcq .opts label{display:flex; gap:10px; align-items:flex-start; padding:8px 12px; border:1px solid var(--border);
+  border-radius:8px; cursor:pointer; font-size:14.5px; background:var(--surface2)}
+.mcq .opts label:hover{border-color:var(--accent)}
+.mcq .opts input{margin-top:4px; accent-color:var(--accent); flex:0 0 auto}
+.mcq .check{margin-top:10px}
+.mcq .feedback{display:none; margin-top:10px; border-radius:8px; padding:10px 14px; font-size:14px}
+.mcq.correct .feedback{display:block; background:var(--green-soft); border:1px solid var(--green)}
+.mcq.wrong .feedback{display:block; background:var(--red-soft); border:1px solid var(--red)}
+.mcq .verdict{font-weight:800; display:block; margin-bottom:2px}
+.mcq.correct .verdict{color:var(--green)}
+.mcq.wrong .verdict{color:var(--red)}
+.mcq.correct .opts label.right, .mcq.wrong .opts label.right{border-color:var(--green); background:var(--green-soft)}
+.mcq.wrong .opts label.picked-wrong{border-color:var(--red); background:var(--red-soft)}
+.mcq.done .check{display:none}
+.mcq.done .opts label{cursor:default}
+
+.tbl-wrap{overflow-x:auto; margin:14px 0}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:460px}
+th,td{border:1px solid var(--border); padding:7px 11px; text-align:left; vertical-align:top}
+th{background:var(--surface2); font-weight:700; font-size:13px}
+
+footer{color:var(--muted); font-size:13px; text-align:center; padding:28px 16px 50px; max-width:70ch; margin:0 auto}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Go <b>Practice Workbook</b></div>
+  <div class="score-pill" id="mcqScore">MCQ score: 0 / 0 checked</div>
+  <button class="btn" id="themeBtn" aria-label="Theme toggle">Theme</button>
+</header>
+
+<main>
+
+<div class="hero">
+  <div class="eyebrow">Fundamentals Only · Questions, Not Theory · W3Schools Companion</div>
+  <h1>Go Practice Workbook</h1>
+  <p class="sub">You study each topic on <a href="https://www.w3schools.com/go/go_introduction.php" target="_blank" rel="noopener">W3Schools Go Tutorial</a>. Then you come here and face the questions. Fundamentals only — variables, data types, arrays, loops, if/else, user input, functions, slices, maps, structs. No database. No backend.</p>
+  <p class="sub">Need the full theory again? Open the main study guide: <a href="go-interview-guide-en.html">English version</a> · <a href="go-interview-guide.html">ગુજરાતી version</a>.</p>
+
+  <div class="box note" style="margin-top:18px">
+    <div class="box-t">How to use this workbook — 3 steps per topic</div>
+    <ol style="margin:6px 0 0">
+      <li><strong>Read</strong> the topic on W3Schools (link given in every section).</li>
+      <li><strong>Part A — Solved questions:</strong> cover the model answer with your hand, answer out loud, then compare. The "why" line tells you what makes an answer score high.</li>
+      <li><strong>Part B — Write your answer:</strong> type your answer in the box (it saves automatically in your browser). Then <strong>copy it into the Claude chat with its ID</strong> — for example: <code>VAR-P1: A variable is a named box...</code> — and I will grade it <strong>out of 10</strong>, explain what was missing, and show you the preferred answer. Each box also has a hidden <em>marking scheme</em> if you want to self-score first.</li>
+    </ol>
+  </div>
+  <p class="sub" style="margin-top:10px">At the end: <strong>40 MCQs</strong>. Pick an option, press <em>Check</em> — it instantly tells you Right or Wrong and why. Your score shows in the top bar.</p>
+
+  <div class="toc-box">
+    <a href="#t-intro">1 Intro</a><a href="#t-syntax">2 Syntax</a><a href="#t-var">3 Variables</a><a href="#t-const">4 Constants</a><a href="#t-out">5 Output</a><a href="#t-types">6 Data Types</a><a href="#t-input">7 User Input</a><a href="#t-ops">8 Operators</a><a href="#t-if">9 If / Else</a><a href="#t-switch">10 Switch</a><a href="#t-loop">11 Loops</a><a href="#t-arr">12 Arrays</a><a href="#t-slice">13 Slices</a><a href="#t-map">14 Maps</a><a href="#t-func">15 Functions</a><a href="#t-struct">16 Structs</a><a href="#t-mcq">⭐ 40 MCQs</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-intro">
+  <div class="eyebrow">Topic 1</div>
+  <h2>Go Introduction</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_introduction.php" target="_blank" rel="noopener">W3Schools — Go Introduction</a> and <a href="https://www.w3schools.com/go/go_getstarted.php" target="_blank" rel="noopener">Go Get Started</a></p>
+
+  <h3>Part A — Solved questions (cover the answer, try first)</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">INT-1</span>What is Go and who created it?</div>
+    <div class="a">Go (also called Golang) is an open-source programming language created at Google in 2009 by Robert Griesemer, Rob Pike, and Ken Thompson. It is compiled, statically typed, and famous for being simple and fast, with built-in support for concurrency.</div>
+    <div class="why">It gives 4 facts in 2 sentences: open-source, Google + year, compiled + statically typed, and the famous strengths. Short and complete beats long and vague.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">INT-2</span>What is Go mainly used for?</div>
+    <div class="a">Go is mainly used for backend web services and APIs, cloud and DevOps tools (Docker and Kubernetes are written in Go), and command-line tools. It is chosen where speed, simple code, and handling many tasks at once matter.</div>
+    <div class="why">Naming real products (Docker, Kubernetes) proves you know the ecosystem, not just a memorized line.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">INT-3</span>Is Go a compiled or interpreted language? What does that mean?</div>
+    <div class="a">Go is compiled. That means the whole source code is translated to machine code before running, producing one executable file. This makes Go programs fast to run, and many errors are caught at compile time, before the program ever starts.</div>
+    <div class="why">It doesn't stop at "compiled" — it explains the meaning and gives the two benefits (speed, early errors). Always add the "so what".</div>
+  </div>
+
+  <h3>Part B — Your turn (write below, then paste to Claude with the ID for marks /10)</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">INT-P1</span>A friend asks you: "Why should I learn Go instead of another language?" Give 3 reasons in your own words.</div>
+    <textarea data-save="INT-P1" placeholder="Write your answer here... (it saves automatically)"></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — any three real strengths: simple/easy syntax, fast (compiled), built-in concurrency (goroutines), single binary, big demand in cloud/backend jobs, strong standard library.</li>
+        <li><strong>3 marks</strong> — each reason has one line of explanation, not just a word.</li>
+        <li><strong>2 marks</strong> — a real example (Docker/Kubernetes, backend APIs).</li>
+        <li><strong>2 marks</strong> — clear, confident sentences.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "First, Go is simple — it has very few keywords, so you can read anyone's code easily. Second, it's compiled, so programs run fast as a single file with nothing to install. Third, concurrency is built in — handling thousands of tasks at once is easy with goroutines. That's why tools like Docker and Kubernetes chose Go."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">INT-P2</span>What is the difference between <code>go run</code> and <code>go build</code>?</div>
+    <textarea data-save="INT-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — go run: compiles AND runs immediately, keeps no file.</li>
+        <li><strong>4 marks</strong> — go build: creates an executable (.exe) you can keep and share.</li>
+        <li><strong>2 marks</strong> — when to use which (run = while learning/developing; build = to ship).</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "<code>go run main.go</code> compiles the code and runs it immediately without saving a binary — perfect while developing. <code>go build</code> compiles and produces a standalone executable that can run anywhere, even without Go installed — that's what you use to ship the program."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-syntax">
+  <div class="eyebrow">Topic 2</div>
+  <h2>Go Syntax &amp; Comments</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_syntax.php" target="_blank" rel="noopener">W3Schools — Go Syntax</a> and <a href="https://www.w3schools.com/go/go_comments.php" target="_blank" rel="noopener">Go Comments</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">SYN-1</span>What are the parts every runnable Go program must have?</div>
+    <div class="a">Three things: <code>package main</code> at the top (marks it as a runnable program), any needed <code>import</code> statements (like "fmt"), and <code>func main()</code> — the entry point where execution starts.</div>
+    <div class="why">It names all three AND says what each one is for. Listing without explaining loses marks.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SYN-2</span>How do you write comments in Go, and why use them?</div>
+    <div class="a"><code>//</code> starts a single-line comment and <code>/* ... */</code> wraps a multi-line comment. The compiler ignores them completely — they exist to explain the code to humans: your teammates and your future self.</div>
+    <div class="why">Both syntaxes + the purpose. The phrase "compiler ignores them" shows you understand what a comment really is.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SYN-3</span>Is the position of the opening curly brace <code>{</code> a style choice in Go?</div>
+    <div class="a">No — it's a rule. The opening brace must be on the same line as the declaration (<code>func main() {</code>). Putting it on the next line is a compile error. Go enforces one official style, and <code>gofmt</code> formats all code the same way automatically.</div>
+    <div class="why">Knowing this is a rule (not taste) + mentioning gofmt shows real Go familiarity — interviewers love it.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">SYN-P1</span>Explain every line of this program as if teaching a beginner:
+      <div class="code-card"><div class="code-head">hello.go</div><pre>package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello World!")
+}</pre></div>
+    </div>
+    <textarea data-save="SYN-P1" placeholder="Line 1: ... Line 2: ... (write your explanation here)"></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — package main = this is a runnable program, not a library.</li>
+        <li><strong>2 marks</strong> — import "fmt" = borrow the printing tools from the standard library.</li>
+        <li><strong>3 marks</strong> — func main() = the entry point; execution starts here.</li>
+        <li><strong>2 marks</strong> — fmt.Println prints the text and moves to a new line.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "<code>package main</code> tells Go this file is a runnable program. <code>import "fmt"</code> brings in the format package so we can print. <code>func main()</code> is the special function Go runs first — the program's front door. Inside it, <code>fmt.Println</code> prints Hello World! to the screen and ends the line."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">SYN-P2</span>What two things will the Go compiler refuse that most other languages only warn about? (Hint: think "unused".)</div>
+    <textarea data-save="SYN-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — an unused local variable is a compile error.</li>
+        <li><strong>4 marks</strong> — an unused import is a compile error.</li>
+        <li><strong>2 marks</strong> — the reason: Go refuses clutter by design; dead code hides bugs.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Go refuses to compile a program with an unused local variable or an unused import. In most languages these are just warnings, but Go makes them errors on purpose — unused code is clutter that hides bugs. The escape hatch is the blank identifier <code>_</code> when you genuinely must ignore something."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-var">
+  <div class="eyebrow">Topic 3 · Core Fundamental</div>
+  <h2>Variables</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_variables.php" target="_blank" rel="noopener">W3Schools — Go Variables</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">VAR-1</span>What is a variable?</div>
+    <div class="a">A variable is a named storage location in memory that holds one value, which can be read and changed while the program runs. In Go, every variable also has a fixed type — a variable declared as int can never hold a string.</div>
+    <div class="why">Definition + the Go-specific point (fixed type). The second sentence is what separates a 7/10 from a 10/10.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">VAR-2</span>Show the two ways to declare a variable in Go and the difference between them.</div>
+    <div class="a">Way 1: <code>var age int = 25</code> — the full form; works everywhere, type optional if a value is given. Way 2: <code>age := 25</code> — short declaration; declares and assigns in one step with the type inferred, but it works only inside functions. In both, the type is fixed at compile time.</div>
+    <div class="why">Shows actual code for both + the key restriction (:= only inside functions) + the shared truth (type still fixed).</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">VAR-3</span>What is the difference between <code>=</code> and <code>:=</code>?</div>
+    <div class="a"><code>:=</code> creates a new variable and gives it a value. <code>=</code> changes the value of a variable that already exists. Using <code>:=</code> twice for the same variable in the same scope is a compile error: "no new variables on left side of :=".</div>
+    <div class="why">Quoting the actual error message proves you've really written Go code, not just read about it.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">VAR-4</span>What happens if you declare a variable but give it no value?</div>
+    <div class="a">It automatically gets its type's zero value: 0 for numbers, "" (empty string) for strings, false for bool, and nil for pointers, slices, and maps. Go never leaves a variable with random garbage — this is a famous Go guarantee.</div>
+    <div class="why">Lists the actual zero values AND names the concept ("zero value") — interviewers listen for the term itself.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">VAR-P1</span>Explain a variable to someone who has never coded, using a real-life example (cupboard, box, locker — your choice).</div>
+    <textarea data-save="VAR-P1" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — a clear everyday analogy (a labeled box/shelf holding one thing).</li>
+        <li><strong>3 marks</strong> — the three ideas: it has a name, it holds a value, the value can change.</li>
+        <li><strong>2 marks</strong> — the Go twist: the box also has a TYPE label (only numbers allowed in this box).</li>
+        <li><strong>2 marks</strong> — one line of Go code as the example.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Think of a school locker with a name on it — 'Ravi'. Inside is one thing, say his file. You can take the file out and put a new one in: the locker (variable) stays, the contents (value) change. Go adds one rule: the locker also says what KIND of thing goes in — a locker marked 'numbers only' can never hold text. In code: <code>marks := 85</code> makes a locker named marks holding 85."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">VAR-P2</span>Find the two mistakes in this code and explain each one:
+      <div class="code-card"><div class="code-head">broken.go</div><pre>func main() {
+    name := "Ravi"
+    name := "Mina"
+    var city string = "Rajkot"
+}</pre></div>
+    </div>
+    <textarea data-save="VAR-P2" placeholder="Mistake 1: ...  Mistake 2: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — <code>name := "Mina"</code> re-declares name; must be <code>name = "Mina"</code> (plain =).</li>
+        <li><strong>4 marks</strong> — <code>city</code> is declared but never used → compile error in Go.</li>
+        <li><strong>2 marks</strong> — stating the fixes, not just the problems.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Mistake 1: line 3 uses <code>:=</code> for a variable that already exists — <code>:=</code> creates new variables, so Go says 'no new variables on left side of :='. Fix: <code>name = "Mina"</code>. Mistake 2: <code>city</code> is declared and never used — in Go that's a compile error, not a warning. Fix: use it, remove it, or (rarely) assign it to <code>_</code>."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">VAR-P3</span>Can you declare multiple variables in one line in Go? Show two different ways.</div>
+    <textarea data-save="VAR-P3" placeholder="Write your answer with code examples..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — <code>a, b := 5, 10</code> (short form, even mixed types: <code>name, age := "Ravi", 25</code>).</li>
+        <li><strong>4 marks</strong> — <code>var x, y int = 1, 2</code> or a var block <code>var ( x = 1; y = "hi" )</code>.</li>
+        <li><strong>2 marks</strong> — a bonus use: swapping without a temp variable — <code>a, b = b, a</code>.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Yes. Short form: <code>a, b := 5, 10</code> — and the types can even differ: <code>name, age := "Ravi", 25</code>. Full form: <code>var x, y int = 1, 2</code>, or a grouped var block. A nice bonus of multi-assignment: swapping two values needs no temp variable — <code>a, b = b, a</code>."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-const">
+  <div class="eyebrow">Topic 4</div>
+  <h2>Constants</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_constants.php" target="_blank" rel="noopener">W3Schools — Go Constants</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">CON-1</span>What is a constant and when do you use one instead of a variable?</div>
+    <div class="a">A constant is a named value fixed at compile time that can never change while the program runs — declared with <code>const</code>, e.g. <code>const Pi = 3.14</code>. Use it for values that must never change: tax rates, limits, configuration names. It prevents accidental modification and tells readers "this is permanent".</div>
+    <div class="why">Definition + code + WHEN to use + the benefit. Four small pieces = a complete answer.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">CON-2</span>What happens if you try to change a constant?</div>
+    <div class="a">A compile error — "cannot assign to" the constant. The mistake is caught before the program ever runs, which is exactly the point of using const.</div>
+    <div class="why">Says WHEN it's caught (compile time, not runtime) — that precision earns the extra marks.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">CON-P1</span>Give two real examples from a shop-billing program where const is better than var, and explain why.</div>
+    <textarea data-save="CON-P1" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — two sensible examples (GST rate, store name, max discount, free-delivery threshold...).</li>
+        <li><strong>4 marks</strong> — the why: these are business rules; nobody should change them mid-program by accident.</li>
+        <li><strong>2 marks</strong> — code: <code>const gstRate = 0.18</code>.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "<code>const gstRate = 0.18</code> and <code>const freeDeliveryAbove = 1000.0</code>. These are business rules, not changing data — if some function could accidentally overwrite the GST rate, every bill after that would be wrong. With const, the compiler blocks any such change before the program even runs."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-out">
+  <div class="eyebrow">Topic 5</div>
+  <h2>Output (Print, Println, Printf)</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_output_functions.php" target="_blank" rel="noopener">W3Schools — Go Output Functions</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">OUT-1</span>What is the difference between <code>Print</code>, <code>Println</code>, and <code>Printf</code>?</div>
+    <div class="a"><code>Print</code> prints values with no newline at the end. <code>Println</code> prints values separated by spaces and adds a newline. <code>Printf</code> prints by a format string with verbs like <code>%d</code> (integer), <code>%s</code> (string), <code>%f</code> (float) — it gives full control over the layout, and you add <code>\n</code> yourself.</div>
+    <div class="why">All three in one breath, each with its one distinguishing feature. The %verbs show Printf knowledge.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">OUT-2</span>What do the format verbs <code>%v</code> and <code>%T</code> do?</div>
+    <div class="a"><code>%v</code> prints any value in its default format — the safe choice when you're not sure of the type. <code>%T</code> prints the TYPE of the value, not the value — <code>fmt.Printf("%T", 42)</code> prints <code>int</code>. %T is very handy while learning and debugging.</div>
+    <div class="why">%T confuses many beginners — explaining it correctly (prints the type) stands out.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">OUT-3</span>How do you print a float to exactly 2 decimal places?</div>
+    <div class="a">With a precision in the verb: <code>fmt.Printf("%.2f", 99.5)</code> prints <code>99.50</code>. The number after the dot sets the decimal places — <code>%.1f</code> gives one, <code>%.3f</code> gives three.</div>
+    <div class="why">A one-line precise answer with the exact syntax — this is a "do you really code?" check question.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">OUT-P1</span>What exactly does this print? Write the output character by character, then explain why:
+      <div class="code-card"><div class="code-head">out.go</div><pre>fmt.Print("A")
+fmt.Print("B")
+fmt.Println("C")
+fmt.Printf("Bill: %d for %s\n", 250, "Ravi")</pre></div>
+    </div>
+    <textarea data-save="OUT-P1" placeholder="Line 1 of output: ...  Line 2: ...  Explanation: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — line 1 is <code>ABC</code> (Print adds no newline, so A, B, C join; Println ends the line).</li>
+        <li><strong>3 marks</strong> — line 2 is <code>Bill: 250 for Ravi</code>.</li>
+        <li><strong>3 marks</strong> — explanation: %d takes 250, %s takes "Ravi", in order.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Output line 1: <code>ABC</code> — Print adds no newline so A and B stick together, and Println prints C then ends the line. Output line 2: <code>Bill: 250 for Ravi</code> — Printf fills the verbs in order: %d gets the integer 250, %s gets the string Ravi, and \n ends the line."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">OUT-P2</span>A junior writes <code>fmt.Printf("%d", "hello")</code>. What happens, and which tool catches this mistake even before running?</div>
+    <textarea data-save="OUT-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>5 marks</strong> — %d expects an integer but got a string; the output shows a complaint like <code>%!d(string=hello)</code> instead of crashing.</li>
+        <li><strong>3 marks</strong> — <code>go vet</code> catches mismatched Printf verbs before running.</li>
+        <li><strong>2 marks</strong> — the fix: use %s (or %v).</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "It compiles and runs, but prints a complaint like <code>%!d(string=hello)</code> because %d expects an integer and got a string. The right verb is %s or the universal %v. <code>go vet</code> catches exactly this kind of verb mismatch before the program ever runs — which is why vet belongs in every workflow."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-types">
+  <div class="eyebrow">Topic 6 · Core Fundamental</div>
+  <h2>Data Types</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_data_types.php" target="_blank" rel="noopener">W3Schools — Go Data Types</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">TYP-1</span>What are Go's basic data types? Give the everyday four.</div>
+    <div class="a">The four you use daily: <code>int</code> for whole numbers (42, -7), <code>float64</code> for decimals (99.50), <code>string</code> for text ("Ravi"), and <code>bool</code> for true/false. Go also has sized variants (int8…int64, float32, uint…) but int and float64 are the defaults.</div>
+    <div class="why">Gives the practical four with examples first, mentions the rest briefly — shows judgment about what matters.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">TYP-2</span>What are zero values? List them for int, float64, string, and bool.</div>
+    <div class="a">The automatic default a variable gets when declared without a value: int → 0, float64 → 0, string → "" (empty string), bool → false. Thanks to zero values, Go has no "uninitialized variable" garbage — ever.</div>
+    <div class="why">The list + the guarantee ("no garbage, ever") — that final line is the interview-winning part.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">TYP-3</span>Why does <code>var total = 10 / 4</code> give 2 and not 2.5?</div>
+    <div class="a">Both 10 and 4 are integers, so Go does integer division and throws away the decimal part: 10/4 = 2. Go never converts types automatically. To get 2.5, make at least one side a float: <code>10.0 / 4</code> or <code>float64(10) / 4</code>.</div>
+    <div class="why">Names the rule (integer division), the deeper reason (no implicit conversion), and the fix. Three layers = full marks.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">TYP-4</span>How do you convert an int to a string? Why is <code>string(65)</code> a trap?</div>
+    <div class="a">Use <code>strconv.Itoa(65)</code>, which gives "65". The trap: <code>string(65)</code> gives <strong>"A"</strong> — it treats 65 as a character code (Unicode), not digits. For string → int it's <code>strconv.Atoi("65")</code>, which returns the number plus an error to check.</div>
+    <div class="why">Knowing the trap AND the Atoi error pair shows real experience. Classic trick question — nail it.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">TYP-P1</span>For a student-marks program, which data type would you pick for: (a) student name, (b) roll number, (c) percentage, (d) is-passed. Explain each choice in one line.</div>
+    <textarea data-save="TYP-P1" placeholder="(a) ... because ...  (b) ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>2 marks each</strong> — (a) string, (b) int, (c) float64, (d) bool — with a one-line reason each.</li>
+        <li><strong>2 marks</strong> — any extra insight (percentage needs decimals → float64; roll number is counted, never fractional → int).</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "(a) Name → string, it's text. (b) Roll number → int, it's a whole number we count with. (c) Percentage → float64, because 85.4% needs decimals — int would silently cut them off. (d) Is-passed → bool, it's purely yes/no, and it plugs straight into if conditions."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">TYP-P2</span>Why does Go force you to write <code>float64(qty) * price</code> instead of just <code>qty * price</code> when qty is int and price is float64? Is this annoying design or good design? Argue your view.</div>
+    <textarea data-save="TYP-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — the rule: Go has NO implicit type conversion; mixed-type math is a compile error.</li>
+        <li><strong>4 marks</strong> — the why: silent conversions cause silent precision/rounding bugs; Go wants every conversion visible.</li>
+        <li><strong>2 marks</strong> — a clear personal verdict with a reason (either side accepted if argued).</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Go never converts types implicitly — mixing int and float64 is a compile error until you convert explicitly. It feels annoying for five minutes, but it's good design: in languages with silent conversion, precision bugs hide for months. In Go, every conversion is visible in the code, so there are no surprises. I'd rather type float64() than debug a rounding bug in production."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-input">
+  <div class="eyebrow">Topic 7 · Extra Fundamental (not on W3Schools)</div>
+  <h2>User Input</h2>
+  <p class="w3">Study first: the main study guide, Part 3 section 3.3 (go-interview-guide-en.html) — W3Schools doesn't cover input for Go.</p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">INP-1</span>How do you read user input from the keyboard in Go?</div>
+    <div class="a">The simplest way is <code>fmt.Scanln(&amp;name)</code> — it reads what the user types and stores it in the variable. The <code>&amp;</code> is mandatory: it passes the variable's address so Scanln can put the value there. For full lines with spaces, <code>bufio.NewReader(os.Stdin)</code> with <code>ReadString('\n')</code> is used.</div>
+    <div class="why">Covers the common tool AND the &amp; reason AND the "line with spaces" upgrade — three levels of knowledge.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">INP-2</span>Why does <code>fmt.Scanln(name)</code> — without the <code>&amp;</code> — not work?</div>
+    <div class="a">Because Go passes copies. Without <code>&amp;</code>, Scanln receives a copy of the variable and fills the copy — the original stays empty. With <code>&amp;name</code> it receives the address, goes to the real variable's location in memory, and writes the input there.</div>
+    <div class="why">This connects input to the pass-by-value concept — showing linked understanding, not isolated facts.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">INP-P1</span>Write (from memory) a small program that asks the user's name and age, then prints: <code>Ravi will be 26 next year</code>.</div>
+    <textarea data-save="INP-P1" placeholder="package main ... (write your code here)"></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>2 marks</strong> — correct skeleton (package main, import "fmt", func main).</li>
+        <li><strong>3 marks</strong> — two variables declared (string + int) and both Scanln calls with <code>&amp;</code>.</li>
+        <li><strong>3 marks</strong> — the output uses age+1 (next year!), via Printf or Println.</li>
+        <li><strong>2 marks</strong> — prompts printed before each input (Print, not Println, so the cursor stays on the line).</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>package main
+
+import "fmt"
+
+func main() {
+    var name string
+    var age int
+
+    fmt.Print("Enter name: ")
+    fmt.Scanln(&amp;name)
+    fmt.Print("Enter age: ")
+    fmt.Scanln(&amp;age)
+
+    fmt.Printf("%s will be %d next year\n", name, age+1)
+}</pre></div>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-ops">
+  <div class="eyebrow">Topic 8</div>
+  <h2>Operators</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_operators.php" target="_blank" rel="noopener">W3Schools — Go Operators</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">OPS-1</span>What is the difference between <code>=</code> and <code>==</code>?</div>
+    <div class="a"><code>=</code> assigns — it puts a value into a variable. <code>==</code> compares — it asks "are these equal?" and gives true or false. A nice Go safety: writing <code>if x = 5</code> by mistake is a compile error, so this classic bug can't happen silently.</div>
+    <div class="why">The Go safety point turns a beginner question into a chance to show language insight.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">OPS-2</span>What does the <code>%</code> operator do, and what is its most famous use?</div>
+    <div class="a"><code>%</code> gives the remainder of a division: <code>10 % 3</code> is 1. Most famous use: checking even/odd — <code>n % 2 == 0</code> means even. Also used for cycling (every 5th item: <code>i % 5 == 0</code>).</div>
+    <div class="why">Definition + the classic use + a second use. The second use is the bonus that separates candidates.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">OPS-3</span>Explain <code>&amp;&amp;</code>, <code>||</code>, and <code>!</code> with an ATM example.</div>
+    <div class="a"><code>&amp;&amp;</code> (AND) — true only when both sides are true: cash comes out if <code>pinOK &amp;&amp; balanceEnough</code>. <code>||</code> (OR) — true when either side is true: a discount applies if <code>isMember || bill &gt; 1000</code>. <code>!</code> (NOT) — flips the value: <code>!paid</code> is true when paid is false.</div>
+    <div class="why">Every operator gets a tiny real condition, not just a truth-table definition.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">OPS-P1</span>Predict the output of each line and explain the tricky one:
+      <div class="code-card"><div class="code-head">ops.go</div><pre>fmt.Println(7 / 2)
+fmt.Println(7 % 2)
+fmt.Println(7.0 / 2)
+fmt.Println(5 &gt; 3 &amp;&amp; 2 &gt; 4)
+fmt.Println(5 &gt; 3 || 2 &gt; 4)</pre></div>
+    </div>
+    <textarea data-save="OPS-P1" placeholder="Line 1: ...  Line 2: ... and the tricky one is ... because ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>5 marks</strong> — outputs: <code>3</code>, <code>1</code>, <code>3.5</code>, <code>false</code>, <code>true</code> (1 each).</li>
+        <li><strong>3 marks</strong> — the tricky one: 7/2 = 3 because both are ints (integer division); 7.0/2 = 3.5 because one side is a float.</li>
+        <li><strong>2 marks</strong> — the &amp;&amp;/|| logic stated (AND needs both; OR needs one).</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "3, 1, 3.5, false, true. The tricky pair is lines 1 and 3: <code>7/2</code> is integer division (both ints) so the .5 is thrown away → 3. But <code>7.0/2</code> has a float on one side, so it's float division → 3.5. Line 4 is false because AND needs both true and 2&gt;4 fails; line 5 is true because OR needs only one."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">OPS-P2</span>What is the difference between <code>x++</code> in Go and in most other languages? (Hint: statement vs expression.)</div>
+    <textarea data-save="OPS-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — in Go, <code>x++</code> is a statement, not an expression — it returns no value.</li>
+        <li><strong>3 marks</strong> — so <code>y := x++</code> or <code>fmt.Println(x++)</code> are compile errors in Go.</li>
+        <li><strong>3 marks</strong> — bonus: Go has no prefix <code>++x</code> at all; only <code>x++</code> on its own line.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "In Go, <code>x++</code> is a statement, not an expression — it increments x but produces no value, so you can't write <code>y := x++</code> like in C or Java. Go also has no prefix form <code>++x</code>. This removes a whole family of confusing one-liners; increment is always its own clear line."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-if">
+  <div class="eyebrow">Topic 9 · Core Fundamental</div>
+  <h2>If / Else</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_conditions.php" target="_blank" rel="noopener">W3Schools — Go Conditions</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">IF-1</span>How is Go's if different from C/Java style ifs? Two differences.</div>
+    <div class="a">One: no parentheses around the condition — <code>if marks &gt;= 33 {</code>, not <code>if (marks &gt;= 33)</code>. Two: the curly braces are always mandatory, even for a single statement. Bonus third: Go's if can start with a short statement — <code>if err := doWork(); err != nil { }</code> — and that variable lives only inside the if.</div>
+    <div class="why">The asked two + a bonus (if-with-statement) that leads straight into Go's error-handling idiom.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">IF-2</span>In an if / else-if / else ladder, how many branches can run?</div>
+    <div class="a">Exactly one. Go checks top to bottom and runs the FIRST condition that is true, then skips the whole rest of the ladder. If none are true, the else (if present) runs. That's why order matters: put the most specific / biggest condition first.</div>
+    <div class="why">"Exactly one" + "order matters" — the second point is what trips people in grading-logic questions.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">IF-3</span>What is wrong with this grading ladder?
+      <div class="code-card"><div class="code-head">grade.go</div><pre>if marks &gt;= 33 {
+    fmt.Println("C")
+} else if marks &gt;= 60 {
+    fmt.Println("B")
+} else if marks &gt;= 80 {
+    fmt.Println("A")
+}</pre></div>
+    </div>
+    <div class="a">The order is backwards. A student with 95 marks satisfies the FIRST condition (95 ≥ 33), prints "C", and the ladder stops — the A branch can never be reached by anyone. Fix: check the highest band first (≥80 → A, then ≥60 → B, then ≥33 → C).</div>
+    <div class="why">It walks through a concrete value (95) to prove the bug — always trace with a number, don't just assert.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">IF-P1</span>Write an if/else ladder for a delivery-charge rule: bill above 1000 → free delivery; bill 500–1000 → charge 40; below 500 → charge 80. Then say what happens for a bill of exactly 500 and exactly 1000 in YOUR code.</div>
+    <textarea data-save="IF-P1" placeholder="Write the code and your boundary analysis..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — a working ladder, highest condition first.</li>
+        <li><strong>4 marks</strong> — boundary analysis: exactly 500 and exactly 1000 — do your &gt; vs &gt;= choices match the rule?</li>
+        <li><strong>2 marks</strong> — clean Go syntax (no parens, braces present).</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>if bill &gt; 1000 {
+    fmt.Println("Free delivery")
+} else if bill &gt;= 500 {
+    fmt.Println("Charge 40")
+} else {
+    fmt.Println("Charge 80")
+}</pre></div>
+      <p>"With exactly 1000: <code>bill &gt; 1000</code> is false, so it falls to the next branch → charge 40 (the rule said 'above 1000' for free, so 1000 itself pays 40 — correct). With exactly 500: <code>bill &gt;= 500</code> is true → charge 40. Boundary values are where if-ladder bugs live, so I always test them."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">IF-P2</span>What does this print, and WHY is it a compile error in Go but a famous hidden bug in C?
+      <div class="code-card"><div class="code-head">trap.go</div><pre>x := 5
+if x = 10 {
+    fmt.Println("ten")
+}</pre></div>
+    </div>
+    <textarea data-save="IF-P2" placeholder="Write your answer here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — it prints nothing: it's a compile error (assignment used as a condition; a condition must be a bool).</li>
+        <li><strong>4 marks</strong> — in C, <code>x = 10</code> is an expression with value 10 = truthy, so the if always runs — a silent bug.</li>
+        <li><strong>2 marks</strong> — the fix: <code>==</code> for comparison.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "It doesn't print anything — it doesn't even compile. <code>x = 10</code> is an assignment, not a boolean, and Go's if demands a boolean condition. In C this compiles: the assignment evaluates to 10, which counts as true, so the branch always runs — one of C's most famous silent bugs. Go's design makes that entire bug class impossible. The intended code is <code>if x == 10</code>."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-switch">
+  <div class="eyebrow">Topic 10</div>
+  <h2>Switch</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_switch.php" target="_blank" rel="noopener">W3Schools — Go Switch</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">SW-1</span>What is the biggest difference between Go's switch and C/Java's switch?</div>
+    <div class="a">Go's switch breaks automatically after each case — there is no fall-through by default, so you never write <code>break</code>. If you genuinely want to continue into the next case, you must write the <code>fallthrough</code> keyword explicitly. In C/Java it's the opposite: forgetting break causes accidental fall-through bugs.</div>
+    <div class="why">States the rule, the opt-in keyword, and why the C behaviour was a bug factory — complete picture.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SW-2</span>Can one case match several values? Show it.</div>
+    <div class="a">Yes — list them with commas: <code>case "Saturday", "Sunday": fmt.Println("Weekend")</code>. Whichever of the listed values matches, that case runs.</div>
+    <div class="why">Code beats description. One accurate line of syntax is a full answer here.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SW-3</span>What is a switch with no expression, and when would you use it?</div>
+    <div class="a">A <code>switch { }</code> with no value acts like a cleaner if/else-if ladder: each case holds a full condition — <code>case marks &gt;= 80: ...</code> — and the first true one runs. Use it when you have 3+ conditions and the if/else chain starts looking noisy.</div>
+    <div class="why">Knowing this form exists — and when it beats if/else — is a mark of someone who's read real Go code.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">SW-P1</span>Convert this if/else ladder into a switch (the condition-style one), and state one reason the switch version is better here:
+      <div class="code-card"><div class="code-head">before.go</div><pre>if marks &gt;= 80 {
+    grade = "A"
+} else if marks &gt;= 60 {
+    grade = "B"
+} else if marks &gt;= 33 {
+    grade = "C"
+} else {
+    grade = "F"
+}</pre></div>
+    </div>
+    <textarea data-save="SW-P1" placeholder="Write the switch version and your reason..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>5 marks</strong> — correct expressionless switch with cases in the right order and a default.</li>
+        <li><strong>3 marks</strong> — knows cases auto-break (no break keywords added).</li>
+        <li><strong>2 marks</strong> — a reason: reads flatter/cleaner; each condition aligned; less punctuation noise.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>switch {
+case marks &gt;= 80:
+    grade = "A"
+case marks &gt;= 60:
+    grade = "B"
+case marks &gt;= 33:
+    grade = "C"
+default:
+    grade = "F"
+}</pre></div>
+      <p>"Every band sits at the same indent level, so the eye scans the rules like a table — with four or more branches, switch reads cleaner than an if/else chain. And since Go auto-breaks, exactly one case runs, same as the ladder."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-loop">
+  <div class="eyebrow">Topic 11 · Core Fundamental</div>
+  <h2>Loops (for)</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_loops.php" target="_blank" rel="noopener">W3Schools — Go Loops</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">LP-1</span>How many loop keywords does Go have, and what forms can they take?</div>
+    <div class="a">Exactly one: <code>for</code>. It has four forms — the classic three-part <code>for i := 0; i &lt; n; i++</code>, the condition-only form <code>for x &gt; 0</code> (Go's while), the bare infinite <code>for { }</code> (exited with break), and <code>for i, v := range collection</code> for walking over slices, maps, and strings.</div>
+    <div class="why">"Exactly one" + all four forms with a micro-example each. This exact question is asked constantly.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">LP-2</span>What do break and continue do? One example each.</div>
+    <div class="a"><code>break</code> exits the loop entirely — e.g., stop searching once the item is found. <code>continue</code> skips the rest of this iteration and jumps to the next one — e.g., skip failed students while printing pass marks. Both affect only the innermost loop.</div>
+    <div class="why">Definitions + use-cases + the "innermost loop" detail that most beginners miss.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">LP-3</span>What is an off-by-one error? Show one with a loop.</div>
+    <div class="a">Looping one time too many or too few, usually from mixing up <code>&lt;</code> and <code>&lt;=</code>. Example: to print a table 1 to 10, <code>for i := 1; i &lt; 10; i++</code> stops at 9 — one short. Boundary values (first and last iteration) are where this bug lives, so always trace them by hand.</div>
+    <div class="why">Names the bug, shows it, and gives the prevention habit (trace the boundaries).</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">LP-4</span>In <code>for i, v := range marks</code>, what are i and v? What if you only need v?</div>
+    <div class="a"><code>i</code> is the index (0, 1, 2…) and <code>v</code> is a COPY of the element at that index. If you only need the value, discard the index with the blank identifier: <code>for _, v := range marks</code>. Important: because v is a copy, writing to v does not change the slice — modify via <code>marks[i]</code> instead.</div>
+    <div class="why">The "v is a copy" warning is the hidden trap graders look for in this question.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">LP-P1</span>Without running it: how many times does each loop run, and what is the final printed value?
+      <div class="code-card"><div class="code-head">count.go</div><pre>count := 0
+for i := 0; i &lt; 5; i++ {
+    count++
+}
+for i := 1; i &lt;= 5; i++ {
+    count++
+}
+fmt.Println(count)</pre></div>
+    </div>
+    <textarea data-save="LP-P1" placeholder="Loop 1 runs ... times because ... Loop 2 runs ... Final output: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — loop 1: 5 times (i = 0,1,2,3,4 — stops when i&lt;5 fails at 5).</li>
+        <li><strong>4 marks</strong> — loop 2: 5 times (i = 1,2,3,4,5 — &lt;= includes 5).</li>
+        <li><strong>2 marks</strong> — output: 10.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Both run 5 times — but by different routes. Loop 1 starts at 0 with <code>&lt; 5</code>, so i takes 0–4. Loop 2 starts at 1 with <code>&lt;= 5</code>, so i takes 1–5. Together count goes up 10 times → output 10. These two styles are the exact place off-by-one bugs come from, so I always list the actual i values."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">LP-P2</span>Write a loop (from memory) that prints the 7 times table, but SKIPS the line for 7×5 and STOPS completely after 7×8. (Uses both continue and break.)</div>
+    <textarea data-save="LP-P2" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — correct loop 1..10 printing 7*i.</li>
+        <li><strong>3 marks</strong> — <code>if i == 5 { continue }</code> placed BEFORE the print.</li>
+        <li><strong>3 marks</strong> — <code>if i &gt; 8 { break }</code> (or break after printing 8) — 8 itself still prints.</li>
+        <li><strong>1 mark</strong> — clean Printf output.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>for i := 1; i &lt;= 10; i++ {
+    if i == 5 {
+        continue // skip 7x5
+    }
+    fmt.Printf("7 x %d = %d\n", i, 7*i)
+    if i == 8 {
+        break // stop after 7x8
+    }
+}</pre></div>
+      <p>"Continue must come before the print (otherwise 7×5 prints anyway), and the break comes after printing 8 so that line still appears. Order inside the loop body is the whole question here."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">LP-P3</span>How do you write a "while" loop in Go? Write one that keeps halving a number (100 → 50 → 25 → …) until it goes below 5, printing each value.</div>
+    <textarea data-save="LP-P3" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — knows the form: <code>for condition { }</code> — no while keyword in Go.</li>
+        <li><strong>4 marks</strong> — working logic: condition <code>n &gt;= 5</code>, body prints then halves.</li>
+        <li><strong>2 marks</strong> — understands integer division (100→50→25→12→6→3 stops).</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>n := 100
+for n &gt;= 5 {
+    fmt.Println(n)
+    n = n / 2
+}
+// prints 100 50 25 12 6 — then n=3, condition fails, loop ends</pre></div>
+      <p>"Go has no while keyword — a for with only a condition IS the while. Note the integer division: 25/2 gives 12, not 12.5."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-arr">
+  <div class="eyebrow">Topic 12 · Core Fundamental</div>
+  <h2>Arrays</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_arrays.php" target="_blank" rel="noopener">W3Schools — Go Arrays</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">ARR-1</span>What is an array in Go? Two key properties.</div>
+    <div class="a">A fixed-length list of same-type elements: <code>var marks [5]int</code>. Key property 1: the length is part of the type — <code>[5]int</code> and <code>[6]int</code> are different types, and the length can never change. Key property 2: assigning or passing an array COPIES all its elements.</div>
+    <div class="why">Those two properties are exactly what make arrays different from slices — the follow-up question is always coming.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">ARR-2</span>Why does indexing start at 0, and what is the last valid index of <code>[5]int</code>?</div>
+    <div class="a">The index is the distance (offset) from the start — the first element is 0 steps away. For <code>[5]int</code> the valid indexes are 0 to 4; the last is len−1 = 4. Accessing index 5 panics at runtime: "index out of range".</div>
+    <div class="why">Gives the reason (offset), the rule (len−1), and the consequence (panic) — three marks, three facts.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">ARR-3</span>What does this print, and why?
+      <div class="code-card"><div class="code-head">arr.go</div><pre>var marks [4]int
+marks[0] = 85
+fmt.Println(marks, len(marks))</pre></div>
+    </div>
+    <div class="a">It prints <code>[85 0 0 0] 4</code>. Every element of a new array starts at its zero value (0 for int), so the three untouched slots are 0 — and len is the declared length, 4, regardless of how many slots were assigned.</div>
+    <div class="why">Connects arrays back to zero values — graders love answers that link topics together.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">ARR-P1</span>Write code that stores 5 students' marks in an array and prints the total and average. Watch the average — it should allow decimals!</div>
+    <textarea data-save="ARR-P1" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — array declared and filled (literal or by index).</li>
+        <li><strong>3 marks</strong> — total via a range loop.</li>
+        <li><strong>4 marks</strong> — average as float: <code>float64(total) / float64(len(marks))</code> — plain total/5 loses decimals!</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>marks := [5]int{85, 90, 78, 92, 60}
+total := 0
+for _, m := range marks {
+    total += m
+}
+avg := float64(total) / float64(len(marks))
+fmt.Printf("Total: %d, Average: %.1f\n", total, avg) // Total: 405, Average: 81.0</pre></div>
+      <p>"The trap is the average: total and len are both ints, so <code>total/len(marks)</code> would do integer division and silently drop the decimals. Converting to float64 first keeps them."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">ARR-P2</span>True or false, with reasoning: "If I pass an array to a function and the function changes element 0, the caller's array also changes."</div>
+    <textarea data-save="ARR-P2" placeholder="True/False because..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>5 marks</strong> — FALSE: arrays are copied when passed; the function edits its own copy.</li>
+        <li><strong>3 marks</strong> — contrast: a SLICE behaves the other way (shared underlying array) — that's why Go code uses slices.</li>
+        <li><strong>2 marks</strong> — how to make it true for arrays: pass a pointer <code>*[5]int</code>.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "False. Go passes everything by value, and for an array that means ALL elements are copied — the function changes its private copy, and the caller sees nothing. This is the opposite of slices, which share their underlying array — one reason slices are the everyday choice. To let a function modify a real array you'd pass a pointer, <code>*[5]int</code>, but in practice you'd just use a slice."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-slice">
+  <div class="eyebrow">Topic 13 · Core Fundamental · Interview Hot Zone 🔥</div>
+  <h2>Slices</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_slices.php" target="_blank" rel="noopener">W3Schools — Go Slices</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">SLC-1</span>What is a slice and how is it different from an array?</div>
+    <div class="a">A slice is a flexible, growable view over an underlying array. Internally it holds three things: a pointer to the array, a length, and a capacity. Unlike an array, its length is not part of the type (<code>[]int</code>, no number), it grows with <code>append</code>, and when passed to functions it shares the same underlying data instead of copying all elements.</div>
+    <div class="why">The three-part header (pointer, len, cap) is THE phrase interviewers wait for. Say it.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SLC-2</span>What is the difference between len and cap?</div>
+    <div class="a"><code>len</code> is how many elements the slice holds right now. <code>cap</code> is how much room the underlying array has from the slice's start. A hall analogy: 30 guests seated (len) in a hall with 50 chairs (cap). When an append needs more than cap, Go allocates a bigger array (roughly double) and copies everything over.</div>
+    <div class="why">Definition + analogy + what happens at the limit — the complete len/cap story in three sentences.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SLC-3</span>Why must you always write <code>s = append(s, x)</code> and never just <code>append(s, x)</code>?</div>
+    <div class="a">Because append may allocate a NEW underlying array (when cap is exceeded) and return a new slice header pointing to it. If you don't catch the result, you keep holding the old header and the appended element is lost. Go actually makes bare <code>append(s, x)</code> a compile error for this reason.</div>
+    <div class="why">Explains the mechanism (new array, new header), not just the rule — mechanism answers score 10/10.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">SLC-4</span>What does <code>s[1:4]</code> return, and what is the hidden danger?</div>
+    <div class="a">A slice of the elements at indexes 1, 2, and 3 — the end index 4 is excluded. The hidden danger: it's not a copy — the sub-slice shares the same underlying array, so changing <code>sub[0]</code> also changes <code>s[1]</code>. For an independent copy, use the built-in <code>copy()</code> into a new slice.</div>
+    <div class="why">"End exclusive" + "shared array" are the two marks; the copy() fix is the bonus.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">SLC-P1</span>Predict the exact output, step by step:
+      <div class="code-card"><div class="code-head">slice.go</div><pre>s := []int{10, 20, 30}
+fmt.Println(len(s), cap(s))
+s = append(s, 40)
+fmt.Println(s)
+t := s[1:3]
+fmt.Println(t)
+t[0] = 99
+fmt.Println(s)</pre></div>
+    </div>
+    <textarea data-save="SLC-P1" placeholder="Line by line: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>2 marks</strong> — line 1: <code>3 3</code>.</li>
+        <li><strong>2 marks</strong> — line 2: <code>[10 20 30 40]</code>.</li>
+        <li><strong>2 marks</strong> — line 3: <code>[20 30]</code> (indexes 1,2 — end exclusive).</li>
+        <li><strong>4 marks</strong> — line 4: <code>[10 99 30 40]</code> — t shares s's array, so t[0]=99 changed s[1]!</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "3 3 → [10 20 30 40] → [20 30] → <strong>[10 99 30 40]</strong>. The final line is the trap: t is a window onto s's underlying array, so writing t[0] = 99 writes into the same memory as s[1]. Slicing never copies — that one fact explains the whole question."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">SLC-P2</span>Write a function <code>biggest(nums []int) int</code> that returns the largest number in a slice. Then say: what should happen if the slice is empty? (There's no single right answer — defend yours.)</div>
+    <textarea data-save="SLC-P2" placeholder="Write the code + your empty-slice decision..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — correct logic: start with nums[0], range, update when bigger.</li>
+        <li><strong>3 marks</strong> — the empty-slice issue is NOTICED (nums[0] would panic).</li>
+        <li><strong>3 marks</strong> — a defended choice: return (int, error), or (value, ok bool), or document the panic.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>func biggest(nums []int) (int, error) {
+    if len(nums) == 0 {
+        return 0, errors.New("empty slice: no biggest value")
+    }
+    max := nums[0]
+    for _, n := range nums[1:] {
+        if n &gt; max {
+            max = n
+        }
+    }
+    return max, nil
+}</pre></div>
+      <p>"On an empty slice, <code>nums[0]</code> would panic — so I return an error instead, Go's standard way of saying 'this can fail'. Returning 0 silently would be wrong: 0 looks like a real answer. Noticing the empty case is worth more in an interview than the loop itself."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-map">
+  <div class="eyebrow">Topic 14 · Core Fundamental · Interview Hot Zone 🔥</div>
+  <h2>Maps</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_maps.php" target="_blank" rel="noopener">W3Schools — Go Maps</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">MAP-1</span>What is a map and when do you choose it over a slice?</div>
+    <div class="a">A map stores key→value pairs with instant lookup by key: <code>map[string]int</code> maps product names to stock counts. Choose a map when you look things up by a name/ID ("what is the pen's stock?"); choose a slice when order matters or you process all items in sequence.</div>
+    <div class="why">The "when to choose" half is what makes this a design answer, not a definition answer.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">MAP-2</span>What does a map return for a key that doesn't exist, and how do you check existence properly?</div>
+    <div class="a">The value type's zero value — <code>stock["pencil"]</code> returns 0 if pencil isn't there, with no error. So a plain read can't distinguish "absent" from "present with value 0". The proper check is the comma-ok form: <code>qty, ok := stock["pencil"]</code> — ok is true only when the key exists.</div>
+    <div class="why">States the problem (ambiguity) before the solution (comma ok) — that's the full reasoning chain.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">MAP-3</span>Name the two famous map traps.</div>
+    <div class="a">Trap 1: writing to a nil map panics — <code>var m map[string]int; m["a"] = 1</code> crashes; initialize with <code>make()</code> or a literal first. Trap 2: map iteration order is deliberately RANDOM — range visits keys in a different order each run, so never depend on map order.</div>
+    <div class="why">Both traps + the fix for the first + the word "deliberately" for the second (Go randomizes on purpose).</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">MAP-P1</span>Write code that counts how many times each word appears in: <code>"go is fun go is fast"</code>. (The single most-asked beginner coding question!)</div>
+    <textarea data-save="MAP-P1" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — split the sentence with <code>strings.Fields()</code>.</li>
+        <li><strong>4 marks</strong> — <code>counts[w]++</code> with the zero-value insight (no existence check needed — missing key reads as 0).</li>
+        <li><strong>3 marks</strong> — correct map declaration + printing the result.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>counts := map[string]int{}
+for _, w := range strings.Fields("go is fun go is fast") {
+    counts[w]++
+}
+fmt.Println(counts) // map[fast:1 fun:1 go:2 is:2]</pre></div>
+      <p>"The beauty is <code>counts[w]++</code>: for a new word the map returns the zero value 0, we add 1, done — no 'does the key exist?' check needed. Mentioning that zero-value trick out loud is what earns the 10."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">MAP-P2</span>Spot the bug, state what happens at runtime, and fix it:
+      <div class="code-card"><div class="code-head">stock.go</div><pre>var stock map[string]int
+stock["pen"] = 120
+fmt.Println(stock["pen"])</pre></div>
+    </div>
+    <textarea data-save="MAP-P2" placeholder="Bug: ...  What happens: ...  Fix: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — <code>var stock map[string]int</code> is nil (never initialized).</li>
+        <li><strong>3 marks</strong> — line 2 panics at runtime: "assignment to entry in nil map".</li>
+        <li><strong>3 marks</strong> — fix: <code>stock := make(map[string]int)</code> or <code>map[string]int{}</code>; bonus: READING a nil map is actually safe, only writing panics.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "The map was declared but never initialized, so it's nil. Line 2 panics at runtime with 'assignment to entry in nil map'. Fix: <code>stock := make(map[string]int)</code>. Fun detail: reading from a nil map is safe (returns zero values) — only writing panics. This compiles cleanly, which is exactly why it's a favourite trap question."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-func">
+  <div class="eyebrow">Topic 15 · Core Fundamental</div>
+  <h2>Functions</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_functions.php" target="_blank" rel="noopener">W3Schools — Go Functions</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">FN-1</span>Read this signature out loud and explain every part: <code>func makeBill(price float64, qty int) (float64, error)</code></div>
+    <div class="a">"A function named makeBill, taking two parameters — price (a float64) and qty (an int) — and returning two values: a float64 result and an error." Multiple return types go in parentheses, and by Go convention the error is always the last return value.</div>
+    <div class="why">Reading signatures fluently is a core skill — plus the "error last" convention shows idiom awareness.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">FN-2</span>Why does Go support multiple return values, and what is the most common pair?</div>
+    <div class="a">So a function can return its result AND its failure together, instead of hiding failures in exceptions or magic values. The most common pair is <code>(result, error)</code> — the caller checks <code>if err != nil</code> immediately. The comma-ok map lookup <code>v, ok := m[k]</code> is the same idea.</div>
+    <div class="why">Links the feature to Go's whole error philosophy and to comma-ok — connected knowledge.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">FN-3</span>If a function changes its parameter, does the caller's variable change? Explain with the word "copy".</div>
+    <div class="a">No — Go passes every argument as a COPY (pass by value). The function edits its own copy; the caller's variable is untouched. To let the function modify the original, pass its address (a pointer): <code>func deposit(balance *float64)</code> called as <code>deposit(&amp;balance)</code>.</div>
+    <div class="why">The "copy" framing + the pointer escape hatch — this exact Q appears in nearly every Go interview.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">FN-P1</span>Write a function <code>grade(marks int) string</code> that returns "A" (80+), "B" (60+), "C" (33+), or "F". Then call it inside a loop for marks list [95, 61, 20] and print each grade.</div>
+    <textarea data-save="FN-P1" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — correct function with ordered conditions and a return on every path.</li>
+        <li><strong>3 marks</strong> — the loop over a slice calling the function.</li>
+        <li><strong>3 marks</strong> — clean style: switch{} or if-ladder both fine; highest band checked first.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>func grade(marks int) string {
+    switch {
+    case marks &gt;= 80: return "A"
+    case marks &gt;= 60: return "B"
+    case marks &gt;= 33: return "C"
+    default:          return "F"
+    }
+}
+
+func main() {
+    for _, m := range []int{95, 61, 20} {
+        fmt.Println(m, "=", grade(m)) // 95 = A, 61 = B, 20 = F
+    }
+}</pre></div>
+      <p>"Every path returns — Go refuses to compile a string-returning function with a reachable end. The switch form keeps the four bands readable as a table."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">FN-P2</span>This function compiles but has a design smell. What is it, and how would you improve the signature?
+      <div class="code-card"><div class="code-head">divide.go</div><pre>func divide(a, b float64) float64 {
+    if b == 0 {
+        return -1 // error signal
+    }
+    return a / b
+}</pre></div>
+    </div>
+    <textarea data-save="FN-P2" placeholder="The smell: ...  Better signature: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — the smell: -1 is a "magic value" — but -1 is ALSO a legitimate division result (e.g., -10/10), so errors and answers are indistinguishable.</li>
+        <li><strong>4 marks</strong> — the fix: return <code>(float64, error)</code> and <code>errors.New("division by zero")</code>.</li>
+        <li><strong>2 marks</strong> — show the caller's <code>if err != nil</code> check.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "Returning -1 as an error signal is broken: -10 ÷ 10 legitimately equals -1, so the caller can't tell an error from a real answer. The Go way is a second return value: <code>func divide(a, b float64) (float64, error)</code>, returning <code>0, errors.New("division by zero")</code> on failure and <code>a/b, nil</code> on success. The caller then checks <code>if err != nil</code> — failure is explicit, not smuggled inside the data."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-struct">
+  <div class="eyebrow">Topic 16 · Core Fundamental</div>
+  <h2>Structs</h2>
+  <p class="w3">Study first: <a href="https://www.w3schools.com/go/go_struct.php" target="_blank" rel="noopener">W3Schools — Go Struct</a></p>
+
+  <h3>Part A — Solved questions</h3>
+  <div class="qa">
+    <div class="q"><span class="qid">ST-1</span>What is a struct and why use one?</div>
+    <div class="a">A struct groups related fields under one custom type: <code>type Student struct { Name string; Roll int; Marks int }</code>. Instead of three loose variables per student, one Student value carries everything together — and you can build slices of them, pass them to functions, and attach methods. It's how Go models real things: students, products, accounts.</div>
+    <div class="why">Definition + code + the three practical payoffs. "It's how Go models real things" is a strong closing line.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">ST-2</span>Show two ways to create a struct value, and which is preferred.</div>
+    <div class="a">With field names: <code>s := Student{Name: "Ravi", Roll: 1}</code> — preferred, because it's readable and doesn't break if fields are reordered. Positional: <code>Student{"Ravi", 1, 85}</code> — fragile; avoid it. Also <code>var s Student</code> gives a zero-value struct: every field at its own zero value, immediately usable.</div>
+    <div class="why">Knows both forms AND takes a position with a reason — interviews reward opinions you can defend.</div>
+  </div>
+  <div class="qa">
+    <div class="q"><span class="qid">ST-3</span>A function takes <code>func promote(s Student)</code> and sets <code>s.Marks = 100</code>. Does the caller's student change? How do you fix it?</div>
+    <div class="a">No — structs are copied when passed, so the function changed its own copy. Fix: take a pointer — <code>func promote(s *Student)</code>, call with <code>promote(&amp;ravi)</code>. Nice Go detail: even with the pointer you still write <code>s.Marks = 100</code>, not <code>(*s).Marks</code> — Go dereferences automatically.</div>
+    <div class="why">The auto-dereference detail at the end is the "I've actually written Go" marker.</div>
+  </div>
+
+  <h3>Part B — Your turn</h3>
+  <div class="practice">
+    <div class="q"><span class="qid">ST-P1</span>Design a <code>Product</code> struct for a shop (at least 3 sensible fields), create a slice of 2 products, and print each as: <code>Pen - Rs 10 (120 in stock)</code>.</div>
+    <textarea data-save="ST-P1" placeholder="Write your code here..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>3 marks</strong> — a sensible struct (Name string, Price float64, Stock int — types matter!).</li>
+        <li><strong>3 marks</strong> — a slice of structs with field-name literals.</li>
+        <li><strong>4 marks</strong> — range + Printf matching the requested format.</li>
+      </ul>
+      <div class="code-card"><div class="code-head">Preferred answer</div><pre>type Product struct {
+    Name  string
+    Price float64
+    Stock int
+}
+
+func main() {
+    items := []Product{
+        {Name: "Pen", Price: 10, Stock: 120},
+        {Name: "Notebook", Price: 45, Stock: 40},
+    }
+    for _, p := range items {
+        fmt.Printf("%s - Rs %.0f (%d in stock)\n", p.Name, p.Price, p.Stock)
+    }
+}</pre></div>
+      <p>"Price is float64 (money can have decimals), Stock is int (you can't have half a pen). Choosing types that match reality is part of the question."</p>
+    </div></details>
+  </div>
+  <div class="practice">
+    <div class="q"><span class="qid">ST-P2</span>What does this print, and what concept does it demonstrate?
+      <div class="code-card"><div class="code-head">copy.go</div><pre>type Account struct{ Balance float64 }
+
+a := Account{Balance: 1000}
+b := a
+b.Balance = 5000
+fmt.Println(a.Balance, b.Balance)</pre></div>
+    </div>
+    <textarea data-save="ST-P2" placeholder="Output: ...  Concept: ..."></textarea>
+    <div class="saved"></div>
+    <details class="scheme"><summary>Marking scheme + preferred answer</summary><div class="body">
+      <ul class="marks">
+        <li><strong>4 marks</strong> — output: <code>1000 5000</code>.</li>
+        <li><strong>4 marks</strong> — concept: <code>b := a</code> COPIES the struct — a and b are independent after that.</li>
+        <li><strong>2 marks</strong> — contrast: with a pointer (<code>b := &amp;a</code>), changing b.Balance WOULD change a.</li>
+      </ul>
+      <p><strong>Preferred answer:</strong> "It prints <code>1000 5000</code>. <code>b := a</code> makes a full copy of the struct — from that moment a and b are two separate accounts, so changing b leaves a alone. This demonstrates that structs are value types in Go. If I had written <code>b := &amp;a</code> (a pointer), then <code>b.Balance = 5000</code> would have changed the original, and it would print 5000 5000."</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section class="topic" id="t-mcq">
+  <div class="eyebrow">Final Exam · Instant Checking</div>
+  <h2>40 MCQs — pick, press Check, get Right/Wrong instantly</h2>
+  <p class="w3">Your live score is in the top bar. Each wrong answer shows the correct option with an explanation — read it, that's where the learning is. Aim: 32+/40 before your interview.</p>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M1</span>Who created Go, and when was it released?</div>
+    <div class="opts">
+      <label><input type="radio" name="m1" value="a">Microsoft, 2012</label>
+      <label><input type="radio" name="m1" value="b">Google, 2009</label>
+      <label><input type="radio" name="m1" value="c">Facebook, 2015</label>
+      <label><input type="radio" name="m1" value="d">Oracle, 2007</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go was designed at Google by Griesemer, Pike, and Thompson, released publicly in 2009.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M2</span>Which file part makes a Go program runnable?</div>
+    <div class="opts">
+      <label><input type="radio" name="m2" value="a"><code>package fmt</code></label>
+      <label><input type="radio" name="m2" value="b"><code>import "main"</code></label>
+      <label><input type="radio" name="m2" value="c"><code>package main</code> + <code>func main()</code></label>
+      <label><input type="radio" name="m2" value="d">a file named main.go</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>package main marks an executable program, and func main() is where execution starts. The filename doesn't matter.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M3</span>What does <code>go run main.go</code> do?</div>
+    <div class="opts">
+      <label><input type="radio" name="m3" value="a">Creates main.exe only</label>
+      <label><input type="radio" name="m3" value="b">Compiles and runs immediately, keeping no binary</label>
+      <label><input type="radio" name="m3" value="c">Only checks the syntax</label>
+      <label><input type="radio" name="m3" value="d">Formats the code</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>go run = compile + execute in one step, no saved file. go build is the one that creates the executable.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M4</span>Which declaration is INVALID at package level (outside any function)?</div>
+    <div class="opts">
+      <label><input type="radio" name="m4" value="a"><code>var name string = "Ravi"</code></label>
+      <label><input type="radio" name="m4" value="b"><code>var count int</code></label>
+      <label><input type="radio" name="m4" value="c"><code>city := "Rajkot"</code></label>
+      <label><input type="radio" name="m4" value="d"><code>const Pi = 3.14</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The short declaration := works only INSIDE functions. At package level, use var or const.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M5</span>What happens if a local variable is declared but never used?</div>
+    <div class="opts">
+      <label><input type="radio" name="m5" value="a">Compile error</label>
+      <label><input type="radio" name="m5" value="b">A warning, program runs</label>
+      <label><input type="radio" name="m5" value="c">Nothing — it's fine</label>
+      <label><input type="radio" name="m5" value="d">Runtime panic</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go makes unused local variables a compile error ("declared and not used") — a deliberate anti-clutter design.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M6</span>What is the zero value of a string?</div>
+    <div class="opts">
+      <label><input type="radio" name="m6" value="a"><code>nil</code></label>
+      <label><input type="radio" name="m6" value="b"><code>"0"</code></label>
+      <label><input type="radio" name="m6" value="c"><code>undefined</code></label>
+      <label><input type="radio" name="m6" value="d"><code>""</code> (empty string)</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Zero values: numbers → 0, string → "", bool → false, pointers/slices/maps → nil. A string is never nil.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M7</span>What does <code>fmt.Println(10 / 4)</code> print?</div>
+    <div class="opts">
+      <label><input type="radio" name="m7" value="a"><code>2.5</code></label>
+      <label><input type="radio" name="m7" value="b"><code>2</code></label>
+      <label><input type="radio" name="m7" value="c"><code>3</code></label>
+      <label><input type="radio" name="m7" value="d">compile error</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Both operands are ints → integer division → the fraction is truncated: 2. For 2.5 write 10.0/4.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M8</span>What does <code>string(72)</code> evaluate to?</div>
+    <div class="opts">
+      <label><input type="radio" name="m8" value="a"><code>"72"</code></label>
+      <label><input type="radio" name="m8" value="b">compile error</label>
+      <label><input type="radio" name="m8" value="c"><code>"H"</code> (the character at code point 72)</label>
+      <label><input type="radio" name="m8" value="d"><code>"seventy-two"</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Converting int→string treats the number as a Unicode code point: 72 = 'H'. For "72" use strconv.Itoa(72). Classic trap!</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M9</span>Which operator gives the remainder of a division?</div>
+    <div class="opts">
+      <label><input type="radio" name="m9" value="a"><code>%</code></label>
+      <label><input type="radio" name="m9" value="b"><code>//</code></label>
+      <label><input type="radio" name="m9" value="c"><code>&amp;</code></label>
+      <label><input type="radio" name="m9" value="d"><code>mod()</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>% is the remainder (modulo) operator: 10 % 3 = 1. Famous use: n % 2 == 0 means even.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M10</span><code>5 &gt; 3 &amp;&amp; 2 &gt; 4</code> evaluates to…</div>
+    <div class="opts">
+      <label><input type="radio" name="m10" value="a"><code>true</code></label>
+      <label><input type="radio" name="m10" value="b"><code>1</code></label>
+      <label><input type="radio" name="m10" value="c">compile error</label>
+      <label><input type="radio" name="m10" value="d"><code>false</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>AND needs BOTH sides true. 5&gt;3 is true but 2&gt;4 is false → false. (And Go booleans are true/false, never 1/0.)</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M11</span>Which if statement is valid Go?</div>
+    <div class="opts">
+      <label><input type="radio" name="m11" value="a"><code>if (x &gt; 5) then { ... }</code></label>
+      <label><input type="radio" name="m11" value="b"><code>if x &gt; 5 { ... }</code></label>
+      <label><input type="radio" name="m11" value="c"><code>if x &gt; 5: ...</code></label>
+      <label><input type="radio" name="m11" value="d"><code>if x &gt; 5 fmt.Println(x)</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>No parentheses needed around the condition, but curly braces are ALWAYS required — even for one line.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M12</span>In Go's switch, what happens after a case's code runs?</div>
+    <div class="opts">
+      <label><input type="radio" name="m12" value="a">It falls into the next case (like C)</label>
+      <label><input type="radio" name="m12" value="b">You must write break or it loops</label>
+      <label><input type="radio" name="m12" value="c">It breaks automatically — only the matched case runs</label>
+      <label><input type="radio" name="m12" value="d">The default case also always runs</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go auto-breaks after each case. Falling through requires the explicit fallthrough keyword.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M13</span>How many loop keywords does Go have?</div>
+    <div class="opts">
+      <label><input type="radio" name="m13" value="a">1 — just <code>for</code></label>
+      <label><input type="radio" name="m13" value="b">2 — <code>for</code> and <code>while</code></label>
+      <label><input type="radio" name="m13" value="c">3 — <code>for</code>, <code>while</code>, <code>do</code></label>
+      <label><input type="radio" name="m13" value="d">2 — <code>for</code> and <code>loop</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Only for — it covers classic, while-style, infinite, and range loops. There is no while keyword in Go.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M14</span>How many times does <code>for i := 0; i &lt; 3; i++</code> run its body?</div>
+    <div class="opts">
+      <label><input type="radio" name="m14" value="a">2</label>
+      <label><input type="radio" name="m14" value="b">4</label>
+      <label><input type="radio" name="m14" value="c">3</label>
+      <label><input type="radio" name="m14" value="d">infinite</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>i takes 0, 1, 2 — three runs. When i becomes 3, the condition i&lt;3 fails and the loop ends.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M15</span>Inside a loop, <code>continue</code> does what?</div>
+    <div class="opts">
+      <label><input type="radio" name="m15" value="a">Exits the loop entirely</label>
+      <label><input type="radio" name="m15" value="b">Skips the rest of this iteration, jumps to the next one</label>
+      <label><input type="radio" name="m15" value="c">Restarts the loop from i = 0</label>
+      <label><input type="radio" name="m15" value="d">Pauses the program</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>continue = skip this round, keep looping. break = leave the loop entirely.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M16</span>What is the output? <code>for i := range 3 { fmt.Print(i, " ") }</code></div>
+    <div class="opts">
+      <label><input type="radio" name="m16" value="a"><code>1 2 3</code></label>
+      <label><input type="radio" name="m16" value="b"><code>3 3 3</code></label>
+      <label><input type="radio" name="m16" value="c">compile error</label>
+      <label><input type="radio" name="m16" value="d"><code>0 1 2</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>range over an integer n (Go 1.22+) yields 0 to n−1: here 0 1 2.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M17</span>Which declares an ARRAY (not a slice)?</div>
+    <div class="opts">
+      <label><input type="radio" name="m17" value="a"><code>x := []int{1, 2, 3}</code></label>
+      <label><input type="radio" name="m17" value="b"><code>x := [3]int{1, 2, 3}</code></label>
+      <label><input type="radio" name="m17" value="c"><code>x := make([]int, 3)</code></label>
+      <label><input type="radio" name="m17" value="d"><code>x := array(1, 2, 3)</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>A number (or ...) inside the brackets = array. Empty brackets [] = slice. That one character is the whole difference.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M18</span>For <code>a := [5]int{}</code>, what is the last valid index?</div>
+    <div class="opts">
+      <label><input type="radio" name="m18" value="a">4</label>
+      <label><input type="radio" name="m18" value="b">5</label>
+      <label><input type="radio" name="m18" value="c">0</label>
+      <label><input type="radio" name="m18" value="d">depends on the values</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Indexes run 0 to len−1 → 0..4. a[5] panics: index out of range.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M19</span>Are <code>[5]int</code> and <code>[6]int</code> the same type?</div>
+    <div class="opts">
+      <label><input type="radio" name="m19" value="a">Yes — both are int arrays</label>
+      <label><input type="radio" name="m19" value="b">Yes, if the values match</label>
+      <label><input type="radio" name="m19" value="c">No — the length is part of an array's type</label>
+      <label><input type="radio" name="m19" value="d">Only at runtime</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>An array's length is baked into its type, so [5]int and [6]int are completely different, non-assignable types.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M20</span>Why must append's result be reassigned: <code>s = append(s, x)</code>?</div>
+    <div class="opts">
+      <label><input type="radio" name="m20" value="a">It's just a style convention</label>
+      <label><input type="radio" name="m20" value="b">append may allocate a new underlying array and return a new slice header</label>
+      <label><input type="radio" name="m20" value="c">append deletes the old slice</label>
+      <label><input type="radio" name="m20" value="d">Go requires all functions' results to be used</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>When capacity runs out, append builds a bigger array elsewhere and returns a header pointing to it. Ignore the result and you keep the old, stale header.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M21</span><code>s := []int{10, 20, 30, 40}; fmt.Println(s[1:3])</code> prints…</div>
+    <div class="opts">
+      <label><input type="radio" name="m21" value="a"><code>[20 30 40]</code></label>
+      <label><input type="radio" name="m21" value="b"><code>[10 20 30]</code></label>
+      <label><input type="radio" name="m21" value="c"><code>[20]</code></label>
+      <label><input type="radio" name="m21" value="d"><code>[20 30]</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>s[1:3] = indexes 1 and 2 — the end index is EXCLUSIVE. [20 30].</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M22</span><code>t := s[0:2]; t[0] = 99</code> — does s change?</div>
+    <div class="opts">
+      <label><input type="radio" name="m22" value="a">Yes — t shares s's underlying array</label>
+      <label><input type="radio" name="m22" value="b">No — slicing makes a copy</label>
+      <label><input type="radio" name="m22" value="c">Compile error</label>
+      <label><input type="radio" name="m22" value="d">Only if s is a pointer</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Slicing creates a VIEW, not a copy — t[0] and s[0] are the same memory. s[0] becomes 99. Use copy() for independence.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M23</span>len vs cap of a slice — which statement is TRUE?</div>
+    <div class="opts">
+      <label><input type="radio" name="m23" value="a">len and cap are always equal</label>
+      <label><input type="radio" name="m23" value="b">cap counts the elements, len counts the memory</label>
+      <label><input type="radio" name="m23" value="c">len = elements now; cap = room in the underlying array</label>
+      <label><input type="radio" name="m23" value="d">cap can be smaller than len</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>len = seated guests, cap = total chairs. cap ≥ len always; append reallocates once cap is exceeded.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M24</span>What does <code>m["missing"]</code> return for <code>m := map[string]int{}</code>?</div>
+    <div class="opts">
+      <label><input type="radio" name="m24" value="a">A runtime panic</label>
+      <label><input type="radio" name="m24" value="b"><code>0</code> — the value type's zero value</label>
+      <label><input type="radio" name="m24" value="c"><code>nil</code></label>
+      <label><input type="radio" name="m24" value="d">An error value</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Missing keys silently return the zero value (0 for int). To distinguish absent from zero, use v, ok := m[key].</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M25</span><code>var m map[string]int; m["a"] = 1</code> causes…</div>
+    <div class="opts">
+      <label><input type="radio" name="m25" value="a">Nothing — it works</label>
+      <label><input type="radio" name="m25" value="b">A compile error</label>
+      <label><input type="radio" name="m25" value="c">m becomes {"a": 1}</label>
+      <label><input type="radio" name="m25" value="d">A runtime panic: assignment to entry in nil map</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The map is nil (never initialized). Writing panics at runtime. Fix: m := make(map[string]int). It compiles fine — that's why it's a trap.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M26</span>In what order does <code>for k, v := range m</code> visit a map's keys?</div>
+    <div class="opts">
+      <label><input type="radio" name="m26" value="a">Random — deliberately different each run</label>
+      <label><input type="radio" name="m26" value="b">Alphabetical</label>
+      <label><input type="radio" name="m26" value="c">Insertion order</label>
+      <label><input type="radio" name="m26" value="d">By value, ascending</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go randomizes map iteration ON PURPOSE so nobody's code can depend on an order. Need order? Sort the keys into a slice first.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M27</span>Which removes the key "pen" from map m?</div>
+    <div class="opts">
+      <label><input type="radio" name="m27" value="a"><code>m["pen"] = nil</code></label>
+      <label><input type="radio" name="m27" value="b"><code>remove(m, "pen")</code></label>
+      <label><input type="radio" name="m27" value="c"><code>delete(m, "pen")</code></label>
+      <label><input type="radio" name="m27" value="d"><code>m.delete("pen")</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The built-in delete(map, key). It's safe even if the key doesn't exist — nothing happens.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M28</span>What does <code>v, ok := m["pen"]</code> give you?</div>
+    <div class="opts">
+      <label><input type="radio" name="m28" value="a">v = value, ok = the key as a string</label>
+      <label><input type="radio" name="m28" value="b">v = value (or zero value), ok = true only if the key exists</label>
+      <label><input type="radio" name="m28" value="c">v = index, ok = value</label>
+      <label><input type="radio" name="m28" value="d">A compile error — maps return one value</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The comma-ok idiom: ok tells you whether the key is really present — the only way to distinguish "absent" from "stored zero".</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M29</span>How many values can a Go function return?</div>
+    <div class="opts">
+      <label><input type="radio" name="m29" value="a">Exactly one</label>
+      <label><input type="radio" name="m29" value="b">One, plus one error maximum</label>
+      <label><input type="radio" name="m29" value="c">Two maximum</label>
+      <label><input type="radio" name="m29" value="d">Any number — multiple returns are built in</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go functions return any number of values: func f() (int, string, error). The (result, error) pair is the famous idiom.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M30</span>What is <code>_</code> (the blank identifier) for?</div>
+    <div class="opts">
+      <label><input type="radio" name="m30" value="a">Explicitly throwing away a value you must receive but don't need</label>
+      <label><input type="radio" name="m30" value="b">A private variable</label>
+      <label><input type="radio" name="m30" value="c">A placeholder for nil</label>
+      <label><input type="radio" name="m30" value="d">Marking a TODO</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Example: for _, v := range s — we must accept the index but don't want it. Go forces discarding to be visible.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M31</span>A function does <code>func f(x int) { x = 100 }</code>. After <code>n := 5; f(n)</code>, what is n?</div>
+    <div class="opts">
+      <label><input type="radio" name="m31" value="a">100</label>
+      <label><input type="radio" name="m31" value="b">0</label>
+      <label><input type="radio" name="m31" value="c">5 — the function changed only its own copy</label>
+      <label><input type="radio" name="m31" value="d">Compile error</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Go is pass-by-value: x is a copy of n. To change the caller's n, pass a pointer: f(&amp;n) with x *int.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M32</span>Which signature is the idiomatic Go way for a function that can fail?</div>
+    <div class="opts">
+      <label><input type="radio" name="m32" value="a"><code>func divide(a, b float64) float64</code> — return -1 on failure</label>
+      <label><input type="radio" name="m32" value="b"><code>func divide(a, b float64) (float64, error)</code></label>
+      <label><input type="radio" name="m32" value="c"><code>func divide(a, b float64) float64</code> — throw an exception</label>
+      <label><input type="radio" name="m32" value="d"><code>func divide(a, b float64) string</code> — return "ERROR"</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Result + error as the last return value; the caller checks if err != nil. Magic values (-1, "ERROR") are indistinguishable from real answers, and Go has no exceptions for normal failures.</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M33</span>In <code>func (a *Account) Deposit(x float64)</code>, what is <code>(a *Account)</code> called?</div>
+    <div class="opts">
+      <label><input type="radio" name="m33" value="a">A pointer receiver — it makes Deposit a method of Account that can modify it</label>
+      <label><input type="radio" name="m33" value="b">A parameter with a default value</label>
+      <label><input type="radio" name="m33" value="c">A return type</label>
+      <label><input type="radio" name="m33" value="d">A generic type constraint</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The receiver attaches the function to the type as a method. Pointer receiver (*Account) = the method can change the original struct.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M34</span><code>b := a</code> where a is a struct. Changing <code>b.Name</code> affects a?</div>
+    <div class="opts">
+      <label><input type="radio" name="m34" value="a">Yes — structs are references</label>
+      <label><input type="radio" name="m34" value="b">Yes, unless you use copy()</label>
+      <label><input type="radio" name="m34" value="c">Compile error — structs can't be assigned</label>
+      <label><input type="radio" name="m34" value="d">No — the struct was copied; a and b are independent</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Structs are value types: assignment copies all fields. Want sharing? Use a pointer: b := &amp;a.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M35</span>Which creates a struct value with field names (the recommended way)?</div>
+    <div class="opts">
+      <label><input type="radio" name="m35" value="a"><code>s := Student("Ravi", 1)</code></label>
+      <label><input type="radio" name="m35" value="b"><code>s := Student{Name: "Ravi", Roll: 1}</code></label>
+      <label><input type="radio" name="m35" value="c"><code>s := new Student("Ravi", 1)</code></label>
+      <label><input type="radio" name="m35" value="d"><code>s := Student["Ravi", 1]</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Field-name literals are readable and survive field reordering. Positional Student{"Ravi", 1} works but is fragile.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M36</span>Why does <code>fmt.Scanln(&amp;name)</code> need the <code>&amp;</code>?</div>
+    <div class="opts">
+      <label><input type="radio" name="m36" value="a">It's just Go syntax decoration</label>
+      <label><input type="radio" name="m36" value="b">To convert name to a string</label>
+      <label><input type="radio" name="m36" value="c">Scanln needs the variable's ADDRESS so it can write the input there</label>
+      <label><input type="radio" name="m36" value="d">To make the input lowercase</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Without &amp;, Scanln gets a copy and fills the copy — your variable stays empty. The address lets it write to the real one. Pass-by-value strikes again!</div>
+  </div>
+
+  <div class="mcq" data-a="a"><div class="q"><span class="qid">M37</span>What does <code>len("Hello")</code> return, and what does len count on strings?</div>
+    <div class="opts">
+      <label><input type="radio" name="m37" value="a">5 — len counts bytes (same as characters here, since all are ASCII)</label>
+      <label><input type="radio" name="m37" value="b">5 — len always counts characters</label>
+      <label><input type="radio" name="m37" value="c">6 — including the terminator</label>
+      <label><input type="radio" name="m37" value="d">It depends on the font</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>len counts BYTES. For ASCII text bytes = characters, but "ભાષા" is 4 characters and 12 bytes. For real character counts use []rune.</div>
+  </div>
+
+  <div class="mcq" data-a="d"><div class="q"><span class="qid">M38</span>What is the output?
+    <div class="code-card"><div class="code-head">q38.go</div><pre>x := 10
+if x := 5; x &gt; 3 {
+    fmt.Println(x)
+}
+fmt.Println(x)</pre></div></div>
+    <div class="opts">
+      <label><input type="radio" name="m38" value="a"><code>10</code> then <code>10</code></label>
+      <label><input type="radio" name="m38" value="b"><code>5</code> then <code>5</code></label>
+      <label><input type="radio" name="m38" value="c">compile error</label>
+      <label><input type="radio" name="m38" value="d"><code>5</code> then <code>10</code></label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>The if-statement's x := 5 creates a NEW x that lives only inside the if (shadowing). Inside prints 5; outside, the original x is still 10.</div>
+  </div>
+
+  <div class="mcq" data-a="b"><div class="q"><span class="qid">M39</span>Which statement about constants is TRUE?</div>
+    <div class="opts">
+      <label><input type="radio" name="m39" value="a">const values can be changed once</label>
+      <label><input type="radio" name="m39" value="b">Assigning to a const is a compile error</label>
+      <label><input type="radio" name="m39" value="c">const only works with numbers</label>
+      <label><input type="radio" name="m39" value="d">const values are set at runtime</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>Constants are fixed at compile time and can never be assigned to. They work with numbers, strings, and bools.</div>
+  </div>
+
+  <div class="mcq" data-a="c"><div class="q"><span class="qid">M40</span>Final one — what is the output?
+    <div class="code-card"><div class="code-head">q40.go</div><pre>s := []int{1, 2, 3}
+double(s)
+fmt.Println(s)
+
+func double(nums []int) {
+    for i := range nums {
+        nums[i] *= 2
+    }
+}</pre></div></div>
+    <div class="opts">
+      <label><input type="radio" name="m40" value="a"><code>[1 2 3]</code> — slices are copied</label>
+      <label><input type="radio" name="m40" value="b">compile error</label>
+      <label><input type="radio" name="m40" value="c"><code>[2 4 6]</code> — the slice header is copied but points to the same array</label>
+      <label><input type="radio" name="m40" value="d"><code>[2 4 6]</code> — because Go is pass-by-reference</label>
+    </div>
+    <button class="btn check" type="button">Check</button>
+    <div class="feedback"><span class="verdict"></span>[2 4 6] — but the REASON matters: Go copied the slice header (pass-by-value!), and the copied header still points to the same underlying array, so element writes are visible. Option D's reasoning is wrong even though its output is right — Go is never pass-by-reference.</div>
+  </div>
+
+  <div class="box tip" style="margin-top:24px">
+    <div class="box-t">After the MCQs</div>
+    <p style="margin:6px 0 0">Score 32+/40 → your fundamentals are interview-ready; move to the main guide's mock interview. Below 32 → re-read the W3Schools pages for every question you missed (the explanation under each wrong answer tells you the exact topic), then ask Claude for a fresh set of MCQs on your weak topics — I can generate unlimited new ones.</p>
+    <p style="margin:10px 0 0"><button class="btn" id="mcqReset" type="button">↺ Retake all 40 MCQs (resets the exam, keeps your written answers)</button></p>
+  </div>
+</section>
+
+
+
+</main>
+
+<footer>
+  <p>Go Practice Workbook · companion to the W3Schools Go tutorial and the "Zero to Go" study guide.<br>
+  Write answers in the boxes (saved in your browser), paste them to Claude with the question ID for marks out of 10.</p>
+</footer>
+
+<script>
+(function(){
+  // theme
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  try{ var saved=localStorage.getItem('sg-theme'); if(saved==='dark'||saved==='light') root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    var sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=(cur? cur==='dark' : sysDark)?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('sg-theme',next);}catch(e){}
+  });
+
+  // answer boxes: autosave
+  document.querySelectorAll('textarea[data-save]').forEach(function(ta){
+    var key='wb-'+ta.getAttribute('data-save');
+    var note=ta.parentElement.querySelector('.saved');
+    try{ var v=localStorage.getItem(key); if(v) { ta.value=v; if(note) note.textContent='Saved ✓'; } }catch(e){}
+    var t=null;
+    ta.addEventListener('input',function(){
+      if(note) note.textContent='Saving...';
+      clearTimeout(t);
+      t=setTimeout(function(){
+        try{ localStorage.setItem(key, ta.value); if(note) note.textContent=ta.value?'Saved ✓':''; }
+        catch(e){ if(note) note.textContent='Could not save (browser storage blocked)'; }
+      },400);
+    });
+  });
+
+  // MCQ checking
+  var correct=0, attempted=0;
+  var scoreEl=document.getElementById('mcqScore');
+  function updateScore(){ if(scoreEl) scoreEl.textContent='MCQ score: '+correct+' / '+attempted+' checked'; }
+  document.querySelectorAll('.mcq').forEach(function(card){
+    var btn=card.querySelector('.check');
+    if(!btn) return;
+    btn.addEventListener('click',function(){
+      var picked=card.querySelector('input:checked');
+      var fb=card.querySelector('.feedback');
+      if(!picked){
+        if(fb){ fb.style.display='block'; fb.querySelector('.verdict').textContent='Pick an option first.'; }
+        return;
+      }
+      var ans=card.getAttribute('data-a');
+      var isRight=picked.value===ans;
+      card.classList.add(isRight?'correct':'wrong','done');
+      card.querySelectorAll('.opts label').forEach(function(l){
+        var inp=l.querySelector('input');
+        inp.disabled=true;
+        if(inp.value===ans) l.classList.add('right');
+        if(inp===picked && !isRight) l.classList.add('picked-wrong');
+      });
+      if(fb){
+        fb.style.display='block';
+        fb.querySelector('.verdict').textContent=isRight?'✔ Right!':'✘ Wrong — correct answer: '+ans.toUpperCase();
+      }
+      attempted++; if(isRight) correct++;
+      updateScore();
+    });
+  });
+  updateScore();
+
+  // MCQ retake: clear all exam state (written answers in textareas are untouched)
+  var resetBtn=document.getElementById('mcqReset');
+  if(resetBtn) resetBtn.addEventListener('click',function(){
+    correct=0; attempted=0;
+    document.querySelectorAll('.mcq').forEach(function(card){
+      card.classList.remove('correct','wrong','done');
+      card.querySelectorAll('input').forEach(function(inp){ inp.disabled=false; inp.checked=false; });
+      card.querySelectorAll('.opts label').forEach(function(l){ l.classList.remove('right','picked-wrong'); });
+      var fb=card.querySelector('.feedback'); if(fb) fb.style.display='none';
+    });
+    updateScore();
+    var first=document.querySelector('.mcq');
+    if(first) first.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+
+</body>
+</html>
